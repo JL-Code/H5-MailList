@@ -38,11 +38,21 @@
             name="checkbox_{{user.ID}}" />
           <i class="weui-icon-checked"></i>
         </div>
-        <div class="weui-cell__bd">
-          {{user.Name}}
+        <div class="weui-cell__bd linkman">
+          <span class="linkman__name"> {{user.Name}}</span>
+          {{if user.WorkAccount}}
+          <img class="linkman__icons" src="../../assets/wechat.svg">
+          {{/if}}
         </div>
       </label>
       {{/each}}
+    </div>
+    {{else if !$data.Children.length && !$data.Users.length}}
+    <div class="weui-msg">
+      <div class="weui-msg__icon-area"><i class="weui-icon-info weui-icon_msg"></i></div>
+      <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title" style="color:#808080">暂无成员</h2>
+      </div>
     </div>
     {{/if}}
   </div>

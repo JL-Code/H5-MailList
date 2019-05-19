@@ -43,8 +43,6 @@ function MailList(options) {
   bindEvents.call(this);
 }
 
-
-
 /**
  * @description 组件绑定事件
  * @private
@@ -81,50 +79,6 @@ function bindEvents() {
     .on('click', '.nav__item', function (e) {
       updateView.call(_this, e.target);
     })
-  // this.$container.addEventListener("click", function (e) {
-  //   let target = e.target;
-  //   let dataset = target.dataset;
-  //   let classList = Array.from(target.classList);
-  //   // console.log("classList", classList);
-  //   if (classList.indexOf("submenu") > -1) {
-  //     e.stopPropagation();
-  //     // TODO: 1. 获取指定节点的下级节点
-  //     // TODO: 2. 查询指定节点的下直接用户成员
-  //     let loading = weui.loading("加载中");
-  //     fetchUser(dataset.id)
-  //       .then(res => {
-  //         loading.hide();
-  //         if (res.data.ErrCode !== 0) {
-  //           return Promise.reject(res.data);
-  //         }
-  //         let users = res.data.Result;
-  //         // target.dataset.users = JSON.stringify(users);
-  //         // TODO: 3. 渲染View
-  //         updateView.call(_this, target, users);
-  //       })
-  //       .catch(err => {
-  //         loading.hide();
-  //         weui.topTips(err.ErrMsg);
-  //         console.error(err);
-  //       });
-  //   } else if (classList.indexOf("nav__item") > -1) {
-  //     e.stopPropagation();
-  //     // 导航
-  //     updateView.call(_this, e.target);
-  //   } else if (classList.indexOf("maillist-btn_confirm") > -1) {
-  //     // TODO: 用户点击了确认按钮，需要关闭通讯录界面并将临时勾选用户添加到userList
-  //     // _this.tempUserList.forEach((value, key) => {
-  //     //   _this.userList.set(key, value);
-  //     // })
-  //     // _this.tempUserList.clear();
-  //     console.log("_this.getUsers()：", _this.getUsers());
-  //   }
-  //   else if (classList.indexOf("maillist-btn_cancel") > -1) {
-  //     // TODO: 用户点击了取消按钮，需要关闭通讯录界面并清理临时勾选用户
-  //     // _this.tempUserList.clear();
-  //     console.log("_this.getUsers()：", _this.getUsers());
-  //   }
-  // });
 
   // 事件注册
   this.$container.on("change", 'input', onChanged);
@@ -149,12 +103,13 @@ function bindEvents() {
  * @param {Object} data 起始节点数据「根」
  */
 function render(data) {
+  console.log("render data", data);
   // TODO: 待优化数据结构和更新机制
   let source = {
     ID: "",
     Name: "",
     Children: [],
-    Users: [],
+    Users: data.Users || [],
     Header: { Navs: this.navs },
     Footer: { Count: this.userList.size }
   };
@@ -211,14 +166,14 @@ function updateNavs(node) {
  * @param {DOM} target 触发事件的DOM对象
  * @param {Array} users 用户信息
  */
-function updateView(target, users) {
+function updateView(target, users = []) {
   let dataset = target.dataset;
   let node = findNode(dataset.id, this.data);
   if (node) {
-    node.Users = users;
+    node.Users = node.Users || users;
     render.call(this, node);
   } else {
-    console.log("node is notfound");
+    console.error("node is notfound", dataset);
   }
 }
 
