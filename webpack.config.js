@@ -13,7 +13,9 @@ module.exports = {
   devServer: {
     contentBase: "./dist",
     disableHostCheck: true, //禁用主机检查
-    host: "0.0.0.0",
+    // host: "192.168.31.110",
+    host: "192.168.31.110",
+    port: 8088,
     allowedHosts: [],
     // 代理
     proxy: {
@@ -72,6 +74,10 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: ["file-loader"]
+      },
+      {
+        test: /\.html$/,
+        use: ["html-loader"]
       }
     ]
   },

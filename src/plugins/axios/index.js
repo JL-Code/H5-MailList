@@ -12,7 +12,7 @@ axios.interceptors.request.use(
     //   util.log.danger("accessToken 附加失败", error.message);
     // }
     //设置网络请求15秒超时
-    config.timeout = 1500;
+    config.timeout = 15000;
     // if (config.url && isProduction) {
     //   if (!server) {
     //     throw new Error("server is undefined");

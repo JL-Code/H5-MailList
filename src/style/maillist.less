@@ -1,130 +1,166 @@
 .maillist {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  line-height: 1.6;
-  background-color: #f8f8f8;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    line-height: 1.6;
+    background-color: #f8f8f8;
 }
+
 .maillist__hd {
-  position: relative;
-  height: 50px;
+    position: relative;
+    height: 50px;
 }
+
 .maillist__bd {
-  flex: 1;
+    flex: 1;
 }
+
 .maillist__bd-listview {
-  overflow-y: auto;
-  overflow-x: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+
 .maillist__ft {
-  height: 50px;
+    height: 50px;
 }
+
 .maillist__user {
-  flex: 1;
-  &::after {
-    display: none;
-  }
-}
-// 操作条
-.actionbar {
-  position: relative;
-  display: flex;
-  padding: 10px 15px;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  &::before {
-    content: " ";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    color: #e5e5e5;
-    z-index: 2;
-    border-top: 1px solid #e5e5e5;
-  }
+    flex: 1;
+
+    &::after {
+        display: none;
+    }
 }
 
-.actionbar .desc {
-  flex: 1;
-  line-height: 30px;
-}
-/* .actionbar__wrapper {
-
-} */
 /*列表项右侧导航*/
 .submenu {
-  display: flex;
-  position: relative;
-  border-left: 1px solid #e5e5e5;
-  color: #1296db;
-  font-size: 14px;
-  font-weight: 400;
-  vertical-align: middle;
+    display: flex;
+    position: relative;
+    border-left: 1px solid #e5e5e5;
+    color: #1296db;
+    font-size: 14px;
+    font-weight: 400;
+    vertical-align: middle;
 }
+
 .submenu::before {
-  content: " ";
-  display: block;
-  height: 18px;
-  width: 18px;
-  margin: 0 5px 0 8px;
-  background-size: 100%;
-  background-image: url(../images/组织架构.png);
+    content: " ";
+    display: block;
+    height: 18px;
+    width: 18px;
+    margin: 0 5px 0 8px;
+    background-size: 100%;
+    background-image: url(../images/组织架构.png);
 }
 
 /*面包屑导航*/
 .crumb-nav {
-  position: relative;
-  &::after {
-    bottom: 0;
-    border-bottom: 1px solid #e5e5e5;
-    transform-origin: 0 100%;
-    transform: scaleY(0.5);
-    content: " ";
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 1px;
-    color: #e5e5e5;
-    z-index: 2;
-  }
+    position: relative;
+
+    &::after {
+        bottom: 0;
+        border-bottom: 1px solid #e5e5e5;
+        transform-origin: 0 100%;
+        transform: scaleY(0.5);
+        content: " ";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        color: #e5e5e5;
+        z-index: 2;
+    }
 }
+
 .nav-list {
-  padding: 0 15px;
-  height: 50px;
-  line-height: 50px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  list-style: none;
-  background-color: #ffffff;
+    padding: 0 15px;
+    height: 50px;
+    line-height: 50px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    list-style: none;
+    background-color: #ffffff;
 }
+
 .nav__item {
-  position: relative;
-  font-size: 16px;
-  color: #2d9fde;
-  display: inline-block;
-  padding-right: 30px;
-  &::after {
-    content: " ";
+    position: relative;
+    font-size: 16px;
+    color: #2d9fde;
     display: inline-block;
-    height: 6px;
-    width: 6px;
-    border-width: 2px 2px 0 0;
-    border-color: #c8c8cd;
-    border-style: solid;
-    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-    position: absolute;
-    top: 50%;
-    right: 15px;
-    margin-top: -4px;
-  }
-  &:last-child::after {
-    display: none;
-  }
+    padding-right: 30px;
+
+    &::after {
+        content: " ";
+        display: inline-block;
+        height: 6px;
+        width: 6px;
+        border-width: 2px 2px 0 0;
+        border-color: #c8c8cd;
+        border-style: solid;
+        transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        margin-top: -4px;
+    }
+
+    &:last-child::after {
+        display: none;
+    }
 }
 
 .nav__item-active {
-  color: #777777;
+    color: #777777;
+}
+
+// footer
+
+.weui-btn.maillist-btn_cancel {
+    margin-top: 0;
+}
+
+// 操作条
+.actionbar {
+    position: relative;
+    display: flex;
+    padding: 10px 15px;
+    background-color: #ffffff;
+
+    &::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        color: #e5e5e5;
+        z-index: 2;
+        border-top: 1px solid #e5e5e5;
+    }
+}
+
+.actionbar__desc {
+    flex: 1;
+    line-height: 30px;
+}
+
+.actionbar__btns {
+    line-height: 30px;
+}
+
+//picker
+.picker-fullscreen {
+    .weui-picker {
+        width: 100%;
+        height: 100%;
+    }
+
+    .weui-picker__bd {
+        // height: calc(100vh - 45px);
+        height: 100vh;
+    }
 }

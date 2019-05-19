@@ -1,7 +1,10 @@
 "use strict";
 import axios from "../axios";
 import { findNode } from "./maillist.util";
+import $ from '../../util'
 import mailListTpl from "../../template/maillist";
+
+
 
 /**
  * @description 通讯录组件
@@ -21,17 +24,26 @@ function MailList(options) {
   };
   this.options = Object.assign({}, defaults, options);
   // 挂载元素
-  this.element = document.querySelector(this.options.el);
+  if (typeof this.options.el === 'string') {
+    this.$container = document.querySelector(this.options.el);
+  }
+  else {
+    this.$container = this.options.el
+  }
   // 选中的用户信息
   this.userList = new Map();
+  this.tempUserList = new Map();
   // 选中的部门信息
   this.departmentList = [];
   // 导航信息
   this.navs = [];
   // tree 数据
   this.data = [];
+
   bindEvents.call(this);
 }
+
+
 
 /**
  * @description 组件绑定事件
@@ -39,61 +51,95 @@ function MailList(options) {
  */
 function bindEvents() {
   let _this = this;
-
-  _this.element.addEventListener("click", function(e) {
+  _this.$container.on('click', '.submenu', function (e) {
+    // TODO: 1. 获取指定节点的下级节点
+    // TODO: 2. 查询指定节点的下直接用户成员
     let target = e.target;
-    let dataset = target.dataset;
-    let classList = Array.from(target.classList);
-    console.log("classList", classList);
-    if (classList.indexOf("submenu") > -1) {
-      e.stopPropagation();
-      // TODO: 1. 获取指定节点的下级节点
-      // TODO: 2. 查询指定节点的下直接用户成员
-      let loading = weui.loading("加载中");
-      fetchUser(dataset.id)
-        .then(res => {
-          loading.hide();
-          if (res.data.ErrCode !== 0) {
-            return Promise.reject(res.data);
-          }
-          let users = res.data.Result;
-          // target.dataset.users = JSON.stringify(users);
-          // TODO: 3. 渲染View
-          updateView.call(_this, target, users);
-        })
-        .catch(err => {
-          loading.hide();
-          weui.topTips(err.ErrMsg);
-          console.error(err);
-        });
-    } else if (classList.indexOf("nav__item") > -1) {
-      e.stopPropagation();
-      // 导航
-      updateView.call(_this, e.target);
-    } else if (classList.indexOf("weui-btn") > -1) {
-      // TODO: 1.关闭通讯录选择界面
+    let dataset = e.target.dataset;
+    let loading = weui.loading("加载中");
+    fetchUser(dataset.id)
+      .then(res => {
+        loading.hide();
+        if (res.data.ErrCode !== 0) {
+          return Promise.reject(res.data);
+        }
+        let users = res.data.Result;
+        // target.dataset.users = JSON.stringify(users);
+        // TODO: 3. 渲染View
+        updateView.call(_this, target, users);
+      })
+      .catch(err => {
+        loading.hide();
+        weui.topTips(err.ErrMsg);
+        console.error(err);
+      });
+  })
+    .on('click', '.maillist-btn_confirm', function () {
+      // TODO: 用户点击了确认按钮，需要关闭通讯录界面并将临时勾选用户添加到userList
       console.log("_this.getUsers()：", _this.getUsers());
-    }
-  });
+    })
+    .on('click', '.nav__item', function (e) {
+      updateView.call(_this, e.target);
+    })
+  // this.$container.addEventListener("click", function (e) {
+  //   let target = e.target;
+  //   let dataset = target.dataset;
+  //   let classList = Array.from(target.classList);
+  //   // console.log("classList", classList);
+  //   if (classList.indexOf("submenu") > -1) {
+  //     e.stopPropagation();
+  //     // TODO: 1. 获取指定节点的下级节点
+  //     // TODO: 2. 查询指定节点的下直接用户成员
+  //     let loading = weui.loading("加载中");
+  //     fetchUser(dataset.id)
+  //       .then(res => {
+  //         loading.hide();
+  //         if (res.data.ErrCode !== 0) {
+  //           return Promise.reject(res.data);
+  //         }
+  //         let users = res.data.Result;
+  //         // target.dataset.users = JSON.stringify(users);
+  //         // TODO: 3. 渲染View
+  //         updateView.call(_this, target, users);
+  //       })
+  //       .catch(err => {
+  //         loading.hide();
+  //         weui.topTips(err.ErrMsg);
+  //         console.error(err);
+  //       });
+  //   } else if (classList.indexOf("nav__item") > -1) {
+  //     e.stopPropagation();
+  //     // 导航
+  //     updateView.call(_this, e.target);
+  //   } else if (classList.indexOf("maillist-btn_confirm") > -1) {
+  //     // TODO: 用户点击了确认按钮，需要关闭通讯录界面并将临时勾选用户添加到userList
+  //     // _this.tempUserList.forEach((value, key) => {
+  //     //   _this.userList.set(key, value);
+  //     // })
+  //     // _this.tempUserList.clear();
+  //     console.log("_this.getUsers()：", _this.getUsers());
+  //   }
+  //   else if (classList.indexOf("maillist-btn_cancel") > -1) {
+  //     // TODO: 用户点击了取消按钮，需要关闭通讯录界面并清理临时勾选用户
+  //     // _this.tempUserList.clear();
+  //     console.log("_this.getUsers()：", _this.getUsers());
+  //   }
+  // });
 
   // 事件注册
-  _this.element.addEventListener("change", onChanged);
+  this.$container.on("change", 'input', onChanged);
 
   // 事件处理函数
 
   function onChanged(e) {
     let target = e.target;
     let dataset = target.dataset;
-    console.log("change", target.tagName);
-    if (target.tagName === "INPUT") {
-      e.stopPropagation();
-      // TODO: 添加选中用户到userList
-      // Map 重复set 会覆盖上一次value
-      if (target.checked) {
-        _this.userList.set(dataset.id, JSON.parse(dataset.user));
-      } else {
-        _this.userList.delete(dataset.id);
-      }
+    // TODO: 添加选中用户到userList
+    // Map 重复set 会覆盖上一次value
+    if (target.checked) {
+      _this.userList.set(dataset.id, JSON.parse(dataset.user));
+    } else {
+      _this.userList.delete(dataset.id);
     }
   }
 }
@@ -124,8 +170,9 @@ function render(data) {
   // 通知 navs 做出反应,
   source.Header.Navs = updateNavs.call(this, source);
   let html = mailListTpl(source);
-  this.element.innerHTML = html;
+  this.$container.html(html);
 }
+
 
 /**
  * @description 更新导航【封装，navs 应提供一个封装好的方法、里面应该做重复键检查、及其他一些业务逻辑】
@@ -190,7 +237,6 @@ function request() {
         return Promise.reject(res.data);
       }
       this.data = res.data.Result;
-      console.log(this);
       render.apply(this, this.data);
     })
     .catch(err => {
@@ -211,7 +257,7 @@ function fetchUser(orgId) {
 }
 
 // 对外方法
-MailList.prototype.getUsers = function() {
+MailList.prototype.getUsers = function () {
   let values = this.userList.values();
   let userArr = Array.from(values);
   return userArr;
@@ -219,15 +265,22 @@ MailList.prototype.getUsers = function() {
 /**
  * @description 打开通讯录选择界面
  */
-MailList.prototype.open = function() {
+MailList.prototype.open = function () {
   // 加载数据
   request.call(this);
 };
 
 /**
+ * @description 取消通讯录选择
+ */
+MailList.prototype.cancel = function () {
+  // TODO: 关闭通讯录选择界面
+};
+
+/**
  * @description 加载本地数据
  */
-MailList.prototype.loadData = function(data) {
+MailList.prototype.loadData = function (data) {
   this.data = data;
   render.apply(this, data);
 };

@@ -13,9 +13,7 @@ export function findNode(id, data) {
   }
   let label = "递归遍历查找耗时：";
   console.time(label);
-  recursiveTraverse(source, function(node) {
-    console.debug("node", node);
-    console.debug("id", id);
+  recursiveTraverse(source, function (node) {
     if (node.ID === id) {
       value = node;
       return false;
@@ -41,7 +39,7 @@ export function recursiveTraverse(node, action) {
   if (flag === false) {
     return;
   }
-  node.Children.forEach(function(item, index) {
+  node.Children.forEach(function (item, index) {
     recursiveTraverse(item, action);
   });
 }
