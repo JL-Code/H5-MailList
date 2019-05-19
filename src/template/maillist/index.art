@@ -1,0 +1,53 @@
+<div class="maillist">
+  <!-- Header start -->
+  {{include './header.art' $data.Header}}
+  <!-- Header end -->
+  <!-- Body start-->
+  <div class="maillist__bd maillist__bd-listview">
+    {{if $data.Children && $data.Children.length}}
+    <div class="weui-cells weui-cells_checkbox">
+      {{each $data.Children node index}}
+      <div class="weui-cell">
+        <!-- <label class="weui-cell weui-cell__bd"> -->
+        <!-- {{if node.isEnd}}
+          <div class="weui-cell__hd">
+            <input type="checkbox" class="weui-check" name="checkbox1" />
+            <i class="weui-icon-checked"></i>
+          </div>
+          {{/if}} -->
+        <div class="weui-cell__bd">
+          {{ node.Name }}
+        </div>
+        <!-- </label> -->
+        <div class="weui-cell__ft">
+          <div class="submenu" data-id="{{ node.ID }}" data-node="{{ node }}">
+            下级
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+    {{if $data.Users && $data.Users.length}}
+    <!-- 当前节点（公司|部门）下辖的人员-->
+    <div class="weui-cells weui-cells_checkbox maillist__user">
+      {{each $data.Users user}}
+      <label class="weui-cell weui-check__label">
+        <div class="weui-cell__hd">
+          <input type="checkbox" class="weui-check" data-id="{{user.ID}}" data-user="{{user}}"
+            name="checkbox_{{user.ID}}" />
+          <i class="weui-icon-checked"></i>
+        </div>
+        <div class="weui-cell__bd">
+          {{user.Name}}
+        </div>
+      </label>
+      {{/each}}
+    </div>
+    {{/if}}
+  </div>
+  <!-- Body end -->
+  <!-- Footer start-->
+  {{include './footer.art' $data.Footer}}
+  <!-- Footer end-->
+</div>

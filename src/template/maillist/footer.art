@@ -1,0 +1,11 @@
+<footer class="maillist__ft">
+  <div class="actionbar">
+    <label class="desc">已选择:{{$data.Count}}</label>
+    <div class="actionbar__wrapper">
+      <button type="button" class="weui-btn weui-btn_mini weui-btn_primary">
+        <!-- 确定(0/200) -->
+        确定
+      </button>
+    </div>
+  </div>
+</footer>
