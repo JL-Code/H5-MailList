@@ -2,6 +2,24 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const os = require("os");
+
+//获取本机IP,当IP 设置为本机IP 后, 局域网内其它人可以通过 IP+端口,访问本机开发环境.
+
+function getLocalIps(flagIpv6) {
+  var ifaces = os.networkInterfaces();
+  var ips = [];
+  var func = function(details) {
+    if (!flagIpv6 && details.family === "IPv6") {
+      return;
+    }
+    ips.push(details.address);
+  };
+  for (var dev in ifaces) {
+    ifaces[dev].forEach(func);
+  }
+  return ips;
+}
 
 module.exports = {
   entry: {
@@ -12,11 +30,11 @@ module.exports = {
   // 配合在package.json scripts中添加 "start": "webpack-dev-server --open" 运行命令：npm run start
   devServer: {
     contentBase: "./dist",
-    disableHostCheck: true, //禁用主机检查
-    // host: "192.168.31.110",
-    host: "192.168.31.110",
+    // disableHostCheck: true, //禁用主机检查
+    // host: getLocalIps()[0],
+    host: "0.0.0.0",
+    useLocalIp: true,
     port: 8088,
-    allowedHosts: [],
     // 代理
     proxy: {
       "/api": {
