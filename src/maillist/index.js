@@ -1,10 +1,8 @@
 "use strict";
-import axios from "../axios";
+import $ from "../util";
+import axios from "../plugins/axios";
 import { findNode } from "./maillist.util";
-import $ from '../../util'
-import mailListTpl from "../../template/maillist";
-
-
+import mailListTpl from "../template/maillist";
 
 /**
  * @description 通讯录组件
@@ -24,11 +22,10 @@ function MailList(options) {
   };
   this.options = Object.assign({}, defaults, options);
   // 挂载元素
-  if (typeof this.options.el === 'string') {
+  if (typeof this.options.el === "string") {
     this.$container = document.querySelector(this.options.el);
-  }
-  else {
-    this.$container = this.options.el
+  } else {
+    this.$container = this.options.el;
   }
   // 选中的用户信息
   this.userList = new Map();
@@ -49,39 +46,41 @@ function MailList(options) {
  */
 function bindEvents() {
   let _this = this;
-  _this.$container.on('click', '.submenu', function (e) {
-    // TODO: 1. 获取指定节点的下级节点
-    // TODO: 2. 查询指定节点的下直接用户成员
-    let target = e.target;
-    let dataset = e.target.dataset;
-    let loading = weui.loading("加载中");
-    fetchUser(dataset.id)
-      .then(res => {
-        loading.hide();
-        if (res.data.ErrCode !== 0) {
-          return Promise.reject(res.data);
-        }
-        let users = res.data.Result;
-        // target.dataset.users = JSON.stringify(users);
-        // TODO: 3. 渲染View
-        updateView.call(_this, target, users);
-      })
-      .catch(err => {
-        loading.hide();
-        weui.topTips(err.ErrMsg);
-        console.error(err);
-      });
-  })
-    .on('click', '.maillist-btn_confirm', function () {
+  _this.$container
+    .on("click", ".weui-cell.organization", function(e) {
+      // TODO: 1. 获取指定节点的下级节点
+      // TODO: 2. 查询指定节点的下直接用户成员
+
+      let target = e.target.closest(".weui-cell.organization");
+      let dataset = target.dataset;
+      let loading = weui.loading("加载中");
+      fetchUser(dataset.code)
+        .then(res => {
+          loading.hide();
+          if (res.data.ErrCode !== 0) {
+            return Promise.reject(res.data);
+          }
+          let users = res.data.Result;
+          // target.dataset.users = JSON.stringify(users);
+          // TODO: 3. 渲染View
+          updateView.call(_this, target, users);
+        })
+        .catch(err => {
+          loading.hide();
+          weui.topTips(err.ErrMsg);
+          console.error(err);
+        });
+    })
+    .on("click", ".maillist-btn_confirm", function() {
       // TODO: 用户点击了确认按钮，需要关闭通讯录界面并将临时勾选用户添加到userList
       console.log("_this.getUsers()：", _this.getUsers());
     })
-    .on('click', '.nav__item', function (e) {
+    .on("click", ".nav__item", function(e) {
       updateView.call(_this, e.target);
-    })
+    });
 
   // 事件注册
-  this.$container.on("change", 'input', onChanged);
+  this.$container.on("change", "input", onChanged);
 
   // 事件处理函数
 
@@ -126,8 +125,8 @@ function render(data) {
   source.Header.Navs = updateNavs.call(this, source);
   let html = mailListTpl(source);
   this.$container.html(html);
+  weui.searchBar(".weui-search-bar");
 }
-
 
 /**
  * @description 更新导航【封装，navs 应提供一个封装好的方法、里面应该做重复键检查、及其他一些业务逻辑】
@@ -169,8 +168,10 @@ function updateNavs(node) {
 function updateView(target, users = []) {
   let dataset = target.dataset;
   let node = findNode(dataset.id, this.data);
+  console.log("updateView", users);
+  console.log("node", node);
   if (node) {
-    node.Users = node.Users || users;
+    node.Users = node.Users && node.Users.length ? node.Users : users;
     render.call(this, node);
   } else {
     console.error("node is notfound", dataset);
@@ -180,7 +181,7 @@ function updateView(target, users = []) {
 /**
  * @description 从远程获取数据（在open后请求数据，且在生命周期内只请求一次）
  */
-function request() {
+function request(callback) {
   let url = this.options.url;
   if (!url) return;
   let loading = weui.loading("加载中");
@@ -204,15 +205,15 @@ function request() {
 
 /**
  * @description 获取指定组织下的用户
- * @param {String} orgId
+ * @param {String} code 组织层级编码
  */
-function fetchUser(orgId) {
-  let url = `http://meunsc.oicp.net:47941/api/v2/organization/${orgId}/users`;
+function fetchUser(code) {
+  let url = `http://meunsc.oicp.net:47941/api/v2/organization/users?hierarchyCode=${code}`;
   return axios.get(url);
 }
 
 // 对外方法
-MailList.prototype.getUsers = function () {
+MailList.prototype.getUsers = function() {
   let values = this.userList.values();
   let userArr = Array.from(values);
   return userArr;
@@ -220,22 +221,22 @@ MailList.prototype.getUsers = function () {
 /**
  * @description 打开通讯录选择界面
  */
-MailList.prototype.open = function () {
+MailList.prototype.open = function() {
   // 加载数据
-  request.call(this);
+  request.call(this, fetchUser);
 };
 
 /**
  * @description 取消通讯录选择
  */
-MailList.prototype.cancel = function () {
+MailList.prototype.cancel = function() {
   // TODO: 关闭通讯录选择界面
 };
 
 /**
  * @description 加载本地数据
  */
-MailList.prototype.loadData = function (data) {
+MailList.prototype.loadData = function(data) {
   this.data = data;
   render.apply(this, data);
 };

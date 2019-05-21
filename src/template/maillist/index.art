@@ -7,7 +7,7 @@
     {{if $data.Children && $data.Children.length}}
     <div class="weui-cells weui-cells_checkbox">
       {{each $data.Children node index}}
-      <div class="weui-cell">
+      <div class="weui-cell organization" data-id="{{ node.ID }}" data-node="{{ node }}" data-code="{{node.HierarchyCode}}">
         <!-- <label class="weui-cell weui-cell__bd"> -->
         <!-- {{if node.isEnd}}
           <div class="weui-cell__hd">
@@ -20,7 +20,7 @@
         </div>
         <!-- </label> -->
         <div class="weui-cell__ft">
-          <div class="submenu" data-id="{{ node.ID }}" data-node="{{ node }}">
+          <div class="submenu">
             下级
           </div>
         </div>
