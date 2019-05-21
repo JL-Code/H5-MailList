@@ -15,6 +15,13 @@
     <button type="button" class="weui-btn weui-btn_primary" id="invokeMailList">选择联系人</button>
     <button type="button" class="weui-btn weui-btn_primary" id="picker">picker</button>
   </div>
+
 </body>
+<script>
+  const pciker = new maillist.Picker({ className: "picker-fullscreen" });
+  document.getElementById('picker').onclick = function () {
+    pciker.open();
+  }
+</script>
 
 </html>

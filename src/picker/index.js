@@ -1,4 +1,4 @@
-import $ from '../../util'
+import $ from '../util'
 import pickerTplArt from './picker.art'
 import MailList from '../maillist'
 
@@ -17,6 +17,7 @@ function Picker(options) {
 
     // 显示与隐藏的方法
     function show() {
+        const _this = this;
         // $picker = $($.render(pickerTpl, defaults));
         $picker = $(pickerTplArt(defaults));
 
@@ -30,7 +31,16 @@ function Picker(options) {
 
         // 重新绑定事件
         bindEvents();
-        let maillist = new MailList({ el: $picker.find('.weui-picker__bd'), url: "http://meunsc.oicp.net:47941/api/v2/organization_tree?userId=68D5333D-F106-4A45-9A5B-61589DA05FFD" });
+        // 创建通讯录组件
+        let maillist = new MailList({
+            el: $picker.find('.weui-picker__bd'),
+            url: "http://meunsc.oicp.net:47941/api/v2/organization_tree?userId=68D5333D-F106-4A45-9A5B-61589DA05FFD"
+            ,
+            onConfirm: function (data) {
+                console.log("users", data)
+                _this.hide();
+            }
+        });
         maillist.open();
         console.log(maillist)
     }
@@ -68,6 +78,7 @@ function Picker(options) {
     }
 
     this.open = show
+    this.hide = hide
 }
 
 export default Picker;
