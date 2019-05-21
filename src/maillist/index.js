@@ -2,6 +2,7 @@
 import $ from "../util";
 import axios from "../plugins/axios";
 import { findNode } from "./maillist.util";
+import icons from '../assets/base64'
 import mailListTpl from "../template/maillist";
 
 /**
@@ -113,6 +114,7 @@ function render(data) {
   console.log("render data", data);
   // TODO: 待优化数据结构和更新机制
   let source = {
+    icons: icons,
     ID: "",
     Name: "",
     Children: [],

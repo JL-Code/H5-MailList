@@ -7,7 +7,8 @@
     {{if $data.Children && $data.Children.length}}
     <div class="weui-cells weui-cells_checkbox">
       {{each $data.Children node index}}
-      <div class="weui-cell organization" data-id="{{ node.ID }}" data-node="{{ node }}" data-code="{{node.HierarchyCode}}">
+      <div class="weui-cell organization" data-id="{{ node.ID }}" data-node="{{ node }}"
+        data-code="{{node.HierarchyCode}}">
         <!-- <label class="weui-cell weui-cell__bd"> -->
         <!-- {{if node.isEnd}}
           <div class="weui-cell__hd">
@@ -41,7 +42,7 @@
         <div class="weui-cell__bd linkman">
           <span class="linkman__name"> {{user.Name}}</span>
           {{if user.WorkAccount}}
-          <img class="linkman__icons" src="../../assets/wechat.svg">
+          <img class="linkman__icons" src="{{$data.icons.wechat}}">
           {{/if}}
         </div>
       </label>
