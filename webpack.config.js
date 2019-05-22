@@ -72,10 +72,10 @@ module.exports = {
       template: path.resolve(__dirname, "index.html")
     }),
     // 引入 webpack 打包分析插件 https://www.jianshu.com/p/e85d6a4f68c0
-    new BundleAnalyzerPlugin(),
-    new UglifyJSPlugin({
-      sourceMap: true
-    })
+    new BundleAnalyzerPlugin()
+    // new UglifyJSPlugin({
+    //   sourceMap: true
+    // })
   ],
   // 各种loader
   module: {

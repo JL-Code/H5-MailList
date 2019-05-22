@@ -288,6 +288,22 @@ function getValues() {
   const values = this.users.lazyUsers.values();
   return Array.from(values);
 }
+
+/**
+ * @description 获取选中的用户
+ * @returns [{id:"",name:"",avatar:""}]
+ * @public
+ */
+function getUsers() {
+  var values = this.getValues();
+  return values.map(v => {
+    return {
+      id: v.ID,
+      name: v.Name,
+      avatar: v.Avatar
+    };
+  });
+}
 /**
  * @description 打开通讯录选择界面
  */
@@ -359,6 +375,7 @@ MailList.prototype.loadData = loadData;
 MailList.prototype.request = request;
 MailList.prototype.updateDOM = updateDOM;
 MailList.prototype.getValues = getValues;
+MailList.prototype.getUsers = getUsers;
 MailList.prototype.remove = remove;
 MailList.prototype.updateUsers = updateUsers;
 
