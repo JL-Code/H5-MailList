@@ -2,7 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin"); //文件压缩
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer") //webpack 打包分析
   .BundleAnalyzerPlugin;
 // const os = require("os");
 
@@ -71,7 +72,10 @@ module.exports = {
       template: path.resolve(__dirname, "index.html")
     }),
     // 引入 webpack 打包分析插件 https://www.jianshu.com/p/e85d6a4f68c0
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin(),
+    new UglifyJSPlugin({
+      sourceMap: true
+    })
   ],
   // 各种loader
   module: {
@@ -107,7 +111,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "maillist.js",
     // 暴露 library refs:https://www.webpackjs.com/guides/author-libraries/
-    library: "maillist",
+    library: "MailList",
     /**
      * 变量：作为一个全局变量，通过 script 标签来访问（libraryTarget:'var'）。
       this：通过 this 对象访问（libraryTarget:'this'）。
