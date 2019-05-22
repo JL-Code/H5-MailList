@@ -1,4 +1,4 @@
-import $ from "../util";
+// import $ from "../util";
 import pickerTplArt from "./picker.art";
 
 function Picker(options) {
@@ -23,7 +23,7 @@ function Picker(options) {
     $(defaults.container).append($picker);
 
     // 这里获取一下计算后的样式，强制触发渲染. fix IOS10下闪现的问题
-    $.getStyle($picker[0], "transform");
+    getStyle($picker[0], "transform");
 
     $picker.find(".weui-mask").addClass("weui-animate-fade-in");
     $picker.find(".weui-picker").addClass("weui-animate-slide-up");
@@ -84,6 +84,39 @@ function Picker(options) {
           $picker.remove();
         }
       });
+  }
+
+  function getStyle(el, styleProp) {
+    var value,
+      defaultView = (el.ownerDocument || document).defaultView;
+    // W3C standard way:
+    if (defaultView && defaultView.getComputedStyle) {
+      // sanitize property name to css notation
+      // (hypen separated words eg. font-Size)
+      styleProp = styleProp.replace(/([A-Z])/g, "-$1").toLowerCase();
+      return defaultView.getComputedStyle(el, null).getPropertyValue(styleProp);
+    } else if (el.currentStyle) {
+      // IE
+      // sanitize property name to camelCase
+      styleProp = styleProp.replace(/\-(\w)/g, (str, letter) => {
+        return letter.toUpperCase();
+      });
+      value = el.currentStyle[styleProp];
+      // convert other units to pixels on IE
+      if (/^\d+(em|pt|%|ex)?$/i.test(value)) {
+        return (value => {
+          var oldLeft = el.style.left,
+            oldRsLeft = el.runtimeStyle.left;
+          el.runtimeStyle.left = el.currentStyle.left;
+          el.style.left = value || 0;
+          value = el.style.pixelLeft + "px";
+          el.style.left = oldLeft;
+          el.runtimeStyle.left = oldRsLeft;
+          return value;
+        })(value);
+      }
+      return value;
+    }
   }
 
   this.open = show;
