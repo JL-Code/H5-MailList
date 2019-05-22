@@ -114,9 +114,11 @@ module.exports = {
       window：通过 window 对象访问，在浏览器中（libraryTarget:'window'）。
       UMD：在 AMD 或 CommonJS 的 require 之后可访问（libraryTarget:'umd'）。
      */
-    libraryTarget: "umd"
+    libraryTarget: "umd",
     // refs:https://webpack.js.org/configuration/output/#outputglobalobject
     // globalObject: 'this'
+    // https://webpack.docschina.org/configuration/output/#output-umdnameddefine
+    umdNamedDefine: true
   },
   // 外部化 lodash 不打包lodash
   externals: {
@@ -127,6 +129,10 @@ module.exports = {
       root: "_"
     },
     axios: "axios",
-    weui: "weui"
+    weui: "weui",
+    zepto: {
+      amd: "zepto",
+      root: "$"
+    }
   }
 };

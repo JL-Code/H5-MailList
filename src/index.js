@@ -1,6 +1,4 @@
-import "./style/site";
-import "./style/maillist";
+import "./style/maillist.less";
+import "./style/maillist-box.less";
 
-import Picker from "./picker"
-
-export { Picker };
+export { default } from "./maillist";

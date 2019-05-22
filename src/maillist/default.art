@@ -1,0 +1,6 @@
+<div class="weui-panel__hd" style="padding:5px 15px 5px">{{label}}</div>
+<div class="weui-panel__bd">
+    <div class="cclist cclist-result">
+       {{include './box-item.art' Users}}
+    </div>
+</div>

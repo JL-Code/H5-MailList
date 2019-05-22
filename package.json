@@ -36,6 +36,7 @@
     "balajs": "^1.0.7",
     "element-closest": "^3.0.1",
     "lodash": "^4.17.11",
-    "object-assign": "^4.1.1"
+    "object-assign": "^4.1.1",
+    "zepto": "^1.2.0"
   }
 }

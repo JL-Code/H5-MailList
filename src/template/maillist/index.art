@@ -36,7 +36,7 @@
       <label class="weui-cell weui-check__label">
         <div class="weui-cell__hd">
           <input type="checkbox" class="weui-check" data-id="{{user.ID}}" data-user="{{user}}"
-            name="checkbox_{{user.ID}}" />
+            name="checkbox_{{user.ID}}" {{user.checked?"checked=checked":""}} />
           <i class="weui-icon-checked"></i>
         </div>
         <div class="weui-cell__bd linkman">

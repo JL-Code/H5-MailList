@@ -9,19 +9,37 @@
   <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css" />
   <script src="https://res.wx.qq.com/open/libs/weuijs/1.1.4/weui.min.js"></script>
   <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+  <style type="text/css">
+    html,
+    body,
+    #app {
+      height: 100%;
+    }
+  </style>
 </head>
 
 <body>
   <div id="app">
     <button type="button" class="weui-btn weui-btn_primary" id="invokeMailList">选择联系人</button>
-    <button type="button" class="weui-btn weui-btn_primary" id="picker">picker</button>
+    <!-- <button type="button" class="weui-btn weui-btn_primary" id="picker">picker</button> -->
+    <button type="button" class="weui-btn weui-btn_primary" id="picker">获取值</button>
+    <div id="maillist"></div>
   </div>
 
 </body>
 <script>
-  const pciker = new maillist.Picker({ className: "picker-fullscreen" });
+  const instance = new maillist.default({
+    el: "#maillist",
+    url: 'http://meunsc.oicp.net:47941/api/v2/organization_tree?userId=68D5333D-F106-4A45-9A5B-61589DA05FFD',
+    className: "picker-fullscreen", onConfirm: function (data) {
+      console.log("onConfirm", data)
+    }
+  });
   document.getElementById('picker').onclick = function () {
-    pciker.open();
+    var users = instance.getValues();
+    console.log(users)
+    alert(users.length)
   }
 </script>
 
