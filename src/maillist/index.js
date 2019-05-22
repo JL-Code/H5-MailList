@@ -26,9 +26,12 @@ function MailList(options) {
     {
       // 挂载元素
       el: "",
+      mode: "multi",
+      type: ["user"],
+      label: "联系人",
       url: "",
       queryParams: {},
-      label: "联系人",
+      selectedUserIds: [],
       onConfirm: $.noop,
       onClose: $.noop,
       onBeforeClose: $.noop
@@ -311,6 +314,9 @@ function open() {
 // 加载数据
 function loadData(data) {
   this.data = data;
+  // TODO: 临时解决带值打开组件重入问题
+  // let selected = this.options.selectedUserIds;
+  // this.users.lazyUsers.set()
   this.render(data);
 }
 
