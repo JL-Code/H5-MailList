@@ -13,7 +13,6 @@ function Picker(options) {
     }, options);
 
     let $picker = null;
-    let maillist = null;
 
     // 显示与隐藏的方法
     function show() {
@@ -42,7 +41,7 @@ function Picker(options) {
             }
         });
         maillist.open();
-        console.log(maillist)
+
     }
 
     function _hide(callback) {

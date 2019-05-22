@@ -14,7 +14,8 @@
 
 .maillist__hd {
   position: relative;
-  height: 89px;
+  // height: 89px;
+  height: 45px;
 }
 
 .maillist__bd {
@@ -43,7 +44,7 @@
   display: flex;
   position: relative;
   border-left: 1px solid #e5e5e5;
-  color: #1296db;
+  color: #1aad19;
   font-size: 14px;
   font-weight: 400;
   vertical-align: middle;
@@ -56,9 +57,15 @@
   width: 18px;
   margin: 0 5px 0 8px;
   background-size: 100%;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABjUlEQVRoQ+1Y0VHDMAyVmKBlAfig/QU2YQR+CT8wAV2imYMRGIH+ttxRFmg7QcVdLwm+HDnZzrNLifJrW9bTk5QnM534xyfuPzUARvPlPTO9MPFlClBCshY6e94VV69I+w2Acbn8TOV87bCIvG8fp7dJAJyXK0Ea7rK1KSbQtG2M/TsAqEi1A4OyWzPcyQDqIgOgFKYxoHUuS6HYFNIiG7uOag5qF4p1UDuXDMB4vloz04XmQJ91IVlsi+lNHxvtsz9irvy4Y9rPmPgaeUGjg0gWwvy0e5i8Ie2ruiR1F+kLxgD4RhA1b7TnimwMIOcNd67IBgAt1+t2PDwAvjmv7Qv9oXV1w2AGNMd81w1ANVsPj4FQ6uuUsi7UKq7sbRSpdl1VG1wDsSl0kBLEs76SXYS+Dqq2eqLMBsC3vYbuMwChEUPvNwZ8I2rzgBMpmwd808bd92ekRIzzv50J/SEOdx5AahiXiWwMjBK92GUDgMr5oxWxAagigKyloHkAxcDR5gEUgFR2VDWa6mKU3W+KlU1Atmn1bwAAAABJRU5ErkJggg==");
+  // background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABjUlEQVRoQ+1Y0VHDMAyVmKBlAfig/QU2YQR+CT8wAV2imYMRGIH+ttxRFmg7QcVdLwm+HDnZzrNLifJrW9bTk5QnM534xyfuPzUARvPlPTO9MPFlClBCshY6e94VV69I+w2Acbn8TOV87bCIvG8fp7dJAJyXK0Ea7rK1KSbQtG2M/TsAqEi1A4OyWzPcyQDqIgOgFKYxoHUuS6HYFNIiG7uOag5qF4p1UDuXDMB4vloz04XmQJ91IVlsi+lNHxvtsz9irvy4Y9rPmPgaeUGjg0gWwvy0e5i8Ie2ruiR1F+kLxgD4RhA1b7TnimwMIOcNd67IBgAt1+t2PDwAvjmv7Qv9oXV1w2AGNMd81w1ANVsPj4FQ6uuUsi7UKq7sbRSpdl1VG1wDsSl0kBLEs76SXYS+Dqq2eqLMBsC3vYbuMwChEUPvNwZ8I2rzgBMpmwd808bd92ekRIzzv50J/SEOdx5AahiXiWwMjBK92GUDgMr5oxWxAagigKyloHkAxcDR5gEUgFR2VDWa6mKU3W+KlU1Atmn1bwAAAABJRU5ErkJggg==");
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABg0lEQVRoQ+1YwVHEMAyUhh6YhA90AHTCzB1/Sjgq4AoiM5RACVwFHJ/khiIiPokJGTKynbWPI8rXtqzVShvJTCf+8Yn7Tw5AURUPTPTExFcpQAnJnqV9rNefL0j7DkBZFe+pnHcOC73V6+Y2CYCLqhSk4Slb9aqBpq0z9u8AoCI1DgzKbs/wJAOoiwyAUpjGgKZclkKxKaRFNnYdJQ6qCsU6qJ1LBqCsij0TX2oOzFzf1avmZqaNH8e/Vej5/I74bEtE18gLBrZ2bSubw/3hFWlf7UtSq8hcMAbAN4KoeWM8V2RjADpvDOaKbADQ7Xovx8sD4Jvz2r7QH9qUGgYzoDnmu24Autl6eQyEUt+nlKnQqLiyyyi423VdbXANxKZQ10ps57bsQvLB0m76J8psAHzlNXSfAQiNGHq/MeAbUZsHhpGyecA3bwb7/kwrEeH7r0dCf4jLnQfAPYxjIx8DiV7ssgFA5fzRitgAdBEA15L/PIBi4GjzAApAKjtqN5rqYpTdL+WGREAk2TO+AAAAAElFTkSuQmCC)
 }
 // 搜索框
+.maillist__hd {
+  .weui-search-bar::before {
+    display: none;
+  }
+}
 .weui-search-bar {
   background-color: #ffffff;
 }
@@ -168,11 +175,12 @@
   flex: 1;
   line-height: 30px;
 }
-
 .actionbar__btns {
   line-height: 30px;
 }
-
+.maillist-btn_cancel::after {
+  width: 199%;
+}
 //picker
 .picker-fullscreen {
   .weui-picker {
@@ -181,14 +189,14 @@
   }
 
   .weui-picker__bd {
-    // height: calc(100vh - 45px);
-    height: 100vh;
+    height: calc(100vh - 45px);
+    // height: 100vh;
   }
 }
 
 // 联系人（用户）
-.linkman {
-}
+// .linkman {
+// }
 .linkman__name {
   vertical-align: middle;
 }

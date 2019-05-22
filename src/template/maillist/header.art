@@ -1,5 +1,5 @@
 <div class="maillist__hd">
-  <div class="weui-search-bar">
+  <!-- <div class="weui-search-bar">
     <form class="weui-search-bar__form">
       <div class="weui-search-bar__box">
         <i class="weui-icon-search"></i>
@@ -12,7 +12,7 @@
       </label>
     </form>
     <a href="javascript:" class="weui-search-bar__cancel-btn">取消</a>
-  </div>
+  </div> -->
   <nav class="crumb-nav">
     <ul class="nav-list">
       {{each Navs}}

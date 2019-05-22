@@ -2,24 +2,26 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const os = require("os");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
+// const os = require("os");
 
 //获取本机IP,当IP 设置为本机IP 后, 局域网内其它人可以通过 IP+端口,访问本机开发环境.
 
-function getLocalIps(flagIpv6) {
-  var ifaces = os.networkInterfaces();
-  var ips = [];
-  var func = function (details) {
-    if (!flagIpv6 && details.family === "IPv6") {
-      return;
-    }
-    ips.push(details.address);
-  };
-  for (var dev in ifaces) {
-    ifaces[dev].forEach(func);
-  }
-  return ips;
-}
+// function getLocalIps(flagIpv6) {
+//   var ifaces = os.networkInterfaces();
+//   var ips = [];
+//   var func = function (details) {
+//     if (!flagIpv6 && details.family === "IPv6") {
+//       return;
+//     }
+//     ips.push(details.address);
+//   };
+//   for (var dev in ifaces) {
+//     ifaces[dev].forEach(func);
+//   }
+//   return ips;
+// }
 
 module.exports = {
   entry: {
@@ -67,7 +69,9 @@ module.exports = {
       title: "H5 MailList Component",
       filename: "index.html",
       template: path.resolve(__dirname, "index.html")
-    })
+    }),
+    // 引入 webpack 打包分析插件 https://www.jianshu.com/p/e85d6a4f68c0
+    new BundleAnalyzerPlugin()
   ],
   // 各种loader
   module: {
@@ -110,17 +114,19 @@ module.exports = {
       window：通过 window 对象访问，在浏览器中（libraryTarget:'window'）。
       UMD：在 AMD 或 CommonJS 的 require 之后可访问（libraryTarget:'umd'）。
      */
-    libraryTarget: 'umd',
+    libraryTarget: "umd"
     // refs:https://webpack.js.org/configuration/output/#outputglobalobject
     // globalObject: 'this'
   },
   // 外部化 lodash 不打包lodash
   externals: {
     lodash: {
-      commonjs: 'lodash',
-      commonjs2: 'lodash',
-      amd: 'lodash',
-      root: '_'
-    }
+      commonjs: "lodash",
+      commonjs2: "lodash",
+      amd: "lodash",
+      root: "_"
+    },
+    axios: "axios",
+    weui: "weui"
   }
 };
