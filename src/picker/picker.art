@@ -1,4 +1,4 @@
-<div class="{{className}}">
+<div class="{{className}} picker-fullscreen">
     <div class="weui-mask"></div>
     <div class="weui-picker">
         <div class="weui-picker__hd">
