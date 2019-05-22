@@ -220,8 +220,8 @@ function fetchUser(prefix, code) {
 function init() {
   let _this = this;
   // TODO: 需要考虑多实例情况,是否需要采取this.forEach
-  let element = document.querySelector(this.options.el);
-  element.classList.add("weui-panel");
+  // let element = document.querySelector(this.options.el);
+  // element.classList.add("weui-panel");
   let $box = $(defaultTpl({ label: this.options.label, Users: [] }));
 
   $(this.options.el).append($box);

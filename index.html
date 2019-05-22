@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>H5 MailList通讯录组件</title>
   <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css" />
@@ -24,7 +25,12 @@
     <button type="button" class="weui-btn weui-btn_primary" id="invokeMailList">选择联系人</button>
     <!-- <button type="button" class="weui-btn weui-btn_primary" id="picker">picker</button> -->
     <button type="button" class="weui-btn weui-btn_primary" id="picker">获取值</button>
-    <div id="maillist"></div>
+    <div class="weui-panel">
+      <div class="weui-panel__hd" style="padding:5px 15px 5px">联系人</div>
+      <div class="weui-panel__bd">
+        <div id="maillist"></div>
+      </div>
+    </div>
   </div>
 
 </body>
