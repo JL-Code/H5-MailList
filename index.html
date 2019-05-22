@@ -32,6 +32,7 @@
   const instance = new maillist.default({
     el: "#maillist",
     url: 'http://meunsc.oicp.net:47941/api/v2/organization_tree',
+    queryParams: { userId: 'D7D69FDD-A13B-E811-8109-9089C5EA5EC1' },
     className: "picker-fullscreen", onConfirm: function (data) {
       console.log("onConfirm", data)
     }

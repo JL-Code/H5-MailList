@@ -26,6 +26,8 @@ function MailList(options) {
     {
       // 挂载元素
       el: "",
+      url: "",
+      queryParams: {},
       label: "联系人",
       onConfirm: $.noop,
       onClose: $.noop,
@@ -239,7 +241,7 @@ function request() {
   if (!url) return;
   let loading = weui.loading("加载组织中");
   axios
-    .get(url)
+    .get(url, { params: this.options.queryParams })
     .then(res => {
       loading.hide();
       if (res.data.ErrCode !== 0) {
