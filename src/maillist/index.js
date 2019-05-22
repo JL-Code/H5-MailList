@@ -104,7 +104,7 @@ function bindEvents() {
       let target = e.target.closest(".weui-cell.organization");
       let dataset = target.dataset;
       let loading = weui.loading("加载中");
-      fetchUser(dataset.code)
+      fetchUser(_this.options.url, dataset.code)
         .then(res => {
           loading.hide();
           if (res.data.ErrCode !== 0) {
@@ -199,10 +199,11 @@ function updateView(target, users = []) {
 
 /**
  * @description 获取指定组织下的用户
+ * @param {String} prefix api前缀
  * @param {String} code 组织层级编码
  */
-function fetchUser(code) {
-  let url = `http://meunsc.oicp.net:47941/api/v2/organization/users?hierarchyCode=${code}`;
+function fetchUser(prefix, code) {
+  let url = `${prefix}/users?hierarchyCode=${code}`;
   return axios.get(url);
 }
 
