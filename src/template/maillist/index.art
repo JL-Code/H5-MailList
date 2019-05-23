@@ -48,6 +48,7 @@
           {{if user.WorkAccount}}
           <img class="linkman__icons" src="{{$data.icons.wechat}}">
           {{/if}}
+          <span class="linkman__desc"></span>
         </div>
       </label>
       {{/each}}
