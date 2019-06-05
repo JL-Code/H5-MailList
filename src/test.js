@@ -1,3 +1,3 @@
-import MailList from "./index";
+// import MailList from '../dist/maillist'
+const MailList = require("./maillist");
 
-console.log(MailList);

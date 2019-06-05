@@ -3,8 +3,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin"); //文件压缩
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer") //webpack 打包分析
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;  //webpack 打包分析
 // const os = require("os");
 
 //获取本机IP,当IP 设置为本机IP 后, 局域网内其它人可以通过 IP+端口,访问本机开发环境.
@@ -41,7 +40,8 @@ module.exports = {
     // 代理
     proxy: {
       "/api": {
-        target: "http://meunsc.oicp.net:47941/",
+        // target: "http://meunsc.oicp.net:47941/",
+        target: "http://demo.highzap.com:8032/",
         changeOrigin: true,
         ws: true,
         pathRewrite: {
