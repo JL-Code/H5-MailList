@@ -109,7 +109,7 @@ function bindEvents() {
       let target = e.target.closest(".weui-cell.organization");
       let dataset = target.dataset;
       let loading = weui.loading("加载中");
-      fetchUser(_this.options.url, dataset.code)
+      fetchUser(_this.options.url, dataset.id)
         .then(res => {
           loading.hide();
           if (res.data.ErrCode !== 0) {
@@ -207,8 +207,8 @@ function updateView(target, users = []) {
  * @param {String} prefix api前缀
  * @param {String} code 组织层级编码
  */
-function fetchUser(prefix, code) {
-  let url = `${prefix}/users?hierarchyCode=${code}`;
+function fetchUser(prefix, orgGUID) {
+  let url = `${prefix}/users_search?orgGUID=${orgGUID}`;
   return axios.get(url);
 }
 
@@ -347,7 +347,7 @@ function updateDOM(type) {
     case "count":
       let count = this.users.lazyUsers.size + this.users.activeUsers.size;
       // let html = `已选择:${count}人`;
-      html = count ? `(${count}) 确定` : "确定";
+      html = count ? `（${count}）确定` : "确定";
       this.picker.$picker.find(".weui-picker-confirm").html(html);
       break;
     case "box-item":

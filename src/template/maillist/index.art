@@ -4,17 +4,17 @@
   <!-- Header end -->
   <!-- Body start-->
   <div class="maillist__bd maillist__bd-listview">
+    <!-- 公司|部门 -->
     {{if $data.Children && $data.Children.length}}
     <div class="weui-cells weui-cells_checkbox">
       {{each $data.Children node index}}
       <div class="weui-cell organization" data-id="{{ node.ID }}" data-node="{{ node }}"
         data-code="{{node.HierarchyCode}}">
-        <!-- <label class="weui-cell weui-cell__bd"> -->
         <div class="weui-cell__hd">
-          <i class="org_avatar"></i>
+          <i class="fa {{node.Icon}}" aria-hidden="true"></i>
         </div>
         <div class="weui-cell__bd">
-          {{ node.Name }}
+          {{ node.Name }}（{{node.TotalStaff}} 人）
         </div>
         <!-- </label> -->
         <div class="weui-cell__ft">
@@ -27,7 +27,7 @@
     </div>
     {{/if}}
     {{if $data.Users && $data.Users.length}}
-    <!-- 当前节点（公司|部门）下辖的人员-->
+    <!-- 当前（公司|部门）下辖的人员-->
     <div class="weui-cells weui-cells_checkbox maillist__user">
       {{each $data.Users user}}
       <label class="weui-cell weui-check__label">
@@ -38,11 +38,13 @@
         </div>
         <div class="weui-cell__bd linkman">
           {{if user.Avatar}}
-          <img src="{{user.Avatar}}" class="linkman__avatar">
+          <div class="z-avatar">
+            <img src="{{user.Avatar}}" class="z-avatar__img">
+          </div>
           {{else if !user.Avatar}}
-          <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHAAAABwBAMAAAA0zul4AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAkUExURUxpcZrC6ZjC6ZrD7ZnM/5nC6P////P4/avN7L/Z8N/s+M/i9Bbd68QAAAAFdFJOUwCRzCsFWTjmsgAAAZFJREFUWMPt2V9OwkAQBvAx8QAm6hF6AB941yMIKRT67CDwbFN8h8YDAF4APEE5n8QY2YWd3Z0v8X+/91+aMrOzy5aIrpJUmfY57XKTArkgOk0Q2L6mkxTKGbUw2KFLDN5SgsE2pWAa2MDfD59emB+f9XDFb5lqYcXvKXWwzx9ZqOByD0camLGRmQIOTLhWwLkJ7xVwa8KJAhYmHCogW4mHmQ1n0bBvw0U0zG1YR8OBDdefD3s2fGjgt0K4jnDLwU0Or0d8AixNOFLArgnvvmKuwpM83ezdWLXpzEODXIJ5oG/kjbXwV1GGy8D2KMKuv4oy7HkXowcO/OX/SRB+R/hXheuIdg58JKv2sFQdyYxpNdQs5JU5AabxEN0C8sKGwzoOHjq3PIb9I7eTizB0OZc8hNmGnRnPAnDLQiZ+WLGY0gdz9qSWYVb4oN17JHbacaYSzDmQWoCbEBy7YfCB1iNJ+JcSLAlF1N7ZBSScUYSKOCFH5N/C5pKkgX8UwlfB8OVzC4Md/IIdvtKHPyKgny1eASNke/TtQ/rZAAAAAElFTkSuQmCC"
-            class="linkman__avatar">
+          <div class="z-avatar z-avatar_normal">
+            <label class="z-avatar__img">{{user.Name.substr(-3)}}</label>
+          </div>
           {{/if}}
           <span class="linkman__name"> {{user.Name}}</span>
           {{if user.WorkAccount}}

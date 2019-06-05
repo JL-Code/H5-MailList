@@ -1,5 +1,4 @@
-@fontSize: 17px;
-@normalFontSize: 14px;
+@import "./variable";
 
 .maillist {
   position: relative;
@@ -16,9 +15,22 @@
     font-weight: normal;
   }
 }
-.weui-picker__action {
-  color: #467db9;
+.picker-hd__title {
+  font-size: 16px;
 }
+.picker-fullscreen {
+  .weui-picker__hd {
+    font-size: @normalFontSize;
+  }
+
+  .weui-picker__action {
+    color: @primaryColor;
+    &:first-child {
+      color: @primaryColor;
+    }
+  }
+}
+
 .maillist__hd {
   position: relative;
   // height: 89px;
@@ -35,6 +47,7 @@
 .maillist__bd-listview {
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .maillist__ft {
@@ -54,7 +67,7 @@
   display: flex;
   position: relative;
   border-left: 1px solid #e5e5e5;
-  color: #467db9;
+  color: @primaryColor;
   font-size: @normalFontSize;
   font-weight: 400;
   vertical-align: middle;
@@ -67,8 +80,7 @@
   width: 18px;
   margin: 0 5px 0 8px;
   background-size: 100%;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABtklEQVRYR+1XQVLCQBDsDg/QJ/gD8wOxSgI3+YH4AvRKhVMoz/EF4g/wJASrhB/4BJ6gDzBjJZAyRGR2Yywoyz0mvZnemenOLLHjxSR+oxe5qMVdCI5K8SEWeHdupzfei+3+lIDnT4YgLmw3r+EF99Gg2bH9xjID/cmMwInt5jxegPk0aNZtv/GFQBQ002emy+tPJMH+E/g7GTCtfRH3owzsXoa9yKUjV8KVEQlcEgdZd2tZoWAhMcPSRlQMkPcFW1lqZIvvN2reloDnT9pC3BE4NCEgwCsFl9GgOaqGQH88AnhuEvwTIw9R0GqrBATU7VUkJOGa9Exm+ZlqVAJ2pwK0nila9/4TiCU+1bLg0AkBHKclEJltw5PLkhqXQEtpOk/8ZhMaEUhkCAwz89IyJoI3Ap3KZKgF3FqSTS9tjWgvCJz5j3Wylk5HJmsaePMEp8rQpAca/jgk2TUJnGFiyPVT0AqrIVBiqDWWoabr9ESkm/2INN9w6DyrPlBO18vkaiUzsuL092qh63ztKyFg00wJtszFZmsP2BIoNVOurnJWt6DviCWX27WZUjlBfoashIBtxvL4D9doFzBV34Y6AAAAAElFTkSuQmCC");
-  // background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABg0lEQVRoQ+1YwVHEMAyUhh6YhA90AHTCzB1/Sjgq4AoiM5RACVwFHJ/khiIiPokJGTKynbWPI8rXtqzVShvJTCf+8Yn7Tw5AURUPTPTExFcpQAnJnqV9rNefL0j7DkBZFe+pnHcOC73V6+Y2CYCLqhSk4Slb9aqBpq0z9u8AoCI1DgzKbs/wJAOoiwyAUpjGgKZclkKxKaRFNnYdJQ6qCsU6qJ1LBqCsij0TX2oOzFzf1avmZqaNH8e/Vej5/I74bEtE18gLBrZ2bSubw/3hFWlf7UtSq8hcMAbAN4KoeWM8V2RjADpvDOaKbADQ7Xovx8sD4Jvz2r7QH9qUGgYzoDnmu24Autl6eQyEUt+nlKnQqLiyyyi423VdbXANxKZQ10ps57bsQvLB0m76J8psAHzlNXSfAQiNGHq/MeAbUZsHhpGyecA3bwb7/kwrEeH7r0dCf4jLnQfAPYxjIx8DiV7ssgFA5fzRitgAdBEA15L/PIBi4GjzAApAKjtqN5rqYpTdL+WGREAk2TO+AAAAAElFTkSuQmCC);
+  background-image: url(@orgIcon);
 }
 // 搜索框
 .maillist__hd {
@@ -97,7 +109,6 @@
 /*面包屑导航*/
 .crumb-nav {
   position: relative;
-
   &::after {
     bottom: 0;
     border-bottom: 1px solid #e5e5e5;
@@ -114,23 +125,25 @@
 }
 
 .nav-list {
-  padding: 0 15px;
-  height: 45px;
-  line-height: 45px;
-  overflow-x: auto;
-  overflow-y: hidden;
   white-space: nowrap;
-  list-style: none;
+  width: 100%;
+  padding: 0 15px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  //hack 父级font-size设置0可以消除子级inline-block元素之间的缝隙 https://www.jianshu.com/p/025b947b5c00
+  font-size: 0;
+  -webkit-overflow-scrolling: touch;
   background-color: #ffffff;
 }
 
 .nav__item {
   position: relative;
-  float: left;
+  display: inline-block;
+  height: 45px;
+  line-height: 45px;
   font-size: @normalFontSize;
-  color: #467db9;
-  padding-right: 15px;
-  font-weight: normal;
+  color: @primaryColor;
+  padding-right: 20px;
 
   &::after {
     content: " ";
@@ -143,8 +156,8 @@
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     position: absolute;
     top: 50%;
-    right: 5px;
-    margin-top: -4px;
+    right: 7px;
+    margin-top: -5px;
   }
 
   &:last-child::after {
@@ -218,10 +231,6 @@
   display: flex;
   align-items: center;
 }
-.linkman__avatar {
-  height: 37px;
-  width: 37px;
-}
 .linkman__name {
   padding: 0 10px;
 }
@@ -241,10 +250,22 @@
   flex-direction: column;
   align-items: center;
 }
+.z-avatar_normal {
+  justify-content: center;
+  .z-avatar__img {
+    font-size: 12px;
+    letter-spacing: normal;
+    vertical-align: middle;
+    text-align: center;
+    color: #ffffff;
+    background-color: @primaryColor;
+  }
+}
 .z-avatar__img {
-  display: inline-flex;
-  height: 45px;
-  width: 45px;
+  border-radius: 50%;
+  height: 37px;
+  line-height: 37px;
+  width: 37px;
   border-style: none;
 }
 .z-avatar__text {
