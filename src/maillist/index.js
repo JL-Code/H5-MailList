@@ -1,11 +1,11 @@
 "use strict";
-// import $ from "../util";
+
 import axios from "../plugins/axios";
 import { findNode } from "./maillist.util";
 import icons from "../assets/base64";
-import mailListTpl from "../template/maillist";
-import defaultTpl from "./default";
-import boxItemTpl from "./box-item";
+import mailListTpl from "./maillist";
+import maillistResultTpl from "./maillist-result";
+import linkmanAvatarTpl from "./linkman-avatar";
 import Picker from "../picker";
 
 /**
@@ -222,16 +222,16 @@ function init() {
   // TODO: 需要考虑多实例情况,是否需要采取this.forEach
   // let element = document.querySelector(this.options.el);
   // element.classList.add("weui-panel");
-  let $box = $(defaultTpl({ label: this.options.label, Users: [] }));
-
+  let $box = $(maillistResultTpl({ label: this.options.label, Users: [] }));
+  // $(this.options.el).addClass("maillist");
   $(this.options.el).append($box);
 
   $box
-    .on("click", ".cc-add", function(e) {
+    .on("click", ".maillist-action_add", function(e) {
       // console.log("_this", _this.open);
       _this.open();
     })
-    .on("click", ".cc-close", function(e) {
+    .on("click", ".maillist-action_close", function(e) {
       console.log(e.target);
       let dataset = e.target.dataset;
       _this.remove(dataset.id);
@@ -352,9 +352,9 @@ function updateDOM(type) {
       break;
     case "box-item":
       // TODO: 更新box显示结果
-      html = boxItemTpl({ Users: this.getValues() });
+      html = linkmanAvatarTpl({ Users: this.getValues() });
       $(this.options.el)
-        .find(".cclist-result")
+        .find(".maillist-result")
         .html(html);
       break;
     default:

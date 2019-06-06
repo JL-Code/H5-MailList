@@ -23,16 +23,18 @@
 
 <body>
   <div id="app">
-    <button type="button" class="weui-btn weui-btn_primary" id="invokeMailList">选择联系人</button>
+    <!-- <button type="button" class="weui-btn weui-btn_primary" id="invokeMailList">选择联系人</button> -->
     <!-- <button type="button" class="weui-btn weui-btn_primary" id="picker">picker</button> -->
-    <button type="button" class="weui-btn weui-btn_primary" id="picker">获取值</button>
+    <!-- <button type="button" class="weui-btn weui-btn_primary" id="picker">获取值</button> -->
     <div class="weui-panel">
       <div class="weui-panel__hd" style="padding:5px 15px 5px">联系人</div>
       <div class="weui-panel__bd">
         <div id="maillist"></div>
+        <div class="linkman-avatar">
+          <span class="white-text">历程</span>
+        </div>
       </div>
     </div>
-  </div>
 
 </body>
 <script>
@@ -44,11 +46,11 @@
       console.log("onConfirm", data)
     }
   });
-  document.getElementById('picker').onclick = function () {
-    var users = instance.getValues();
-    console.log(instance.getUsers())
-    alert(users.length)
-  }
+  // document.getElementById('picker').onclick = function () {
+  //   var users = instance.getValues();
+  //   console.log(instance.getUsers())
+  //   alert(users.length)
+  // }
 </script>
 
 </html>

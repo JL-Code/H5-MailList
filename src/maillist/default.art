@@ -1,3 +1,0 @@
-<div class="cclist-result">
-    {{include './box-item.art' Users}}
-</div>

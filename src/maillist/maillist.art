@@ -37,15 +37,13 @@
           <i class="weui-icon-checked"></i>
         </div>
         <div class="weui-cell__bd linkman">
-          {{if user.Avatar}}
-          <div class="z-avatar">
-            <img src="{{user.Avatar}}" class="z-avatar__img">
+          <div class="avatar">
+            {{if user.Avatar}}
+            <img src="{{user.Avatar}}">
+            {{else if !user.Avatar}}
+            <span class="white-text headline">{{user.Name.substr(-3)}}</span>
+            {{/if}}
           </div>
-          {{else if !user.Avatar}}
-          <div class="z-avatar z-avatar_normal">
-            <label class="z-avatar__img">{{user.Name.substr(-3)}}</label>
-          </div>
-          {{/if}}
           <span class="linkman__name"> {{user.Name}}</span>
           {{if user.WorkAccount}}
           <img class="linkman__icons" src="{{$data.icons.wechat}}">
