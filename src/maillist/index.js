@@ -3,11 +3,12 @@
 import axios from "../plugins/axios";
 import { findNode } from "./maillist.util";
 import icons from "../assets/base64";
-import mailListTpl from "./maillist";
-import maillistResultTpl from "./maillist-result";
-import linkmanAvatarTpl from "./linkman-avatar";
 import Picker from "../picker";
 import SearchBar from "../searchbar";
+
+import mailListTpl from "./templates/maillist";
+import maillistResultTpl from "./templates/maillist-result";
+import linkmanAvatarTpl from "./templates/linkman-avatar";
 
 /**
  * @description 通讯录组件

@@ -4,7 +4,7 @@
  * @Date: 2019-05-21 20:49:02
  */
 import _ from "lodash";
-import axios from "../plugins/axios";
+import axios from "../../../plugins/axios";
 import barTpl from "./input";
 import resultTpl from "./result-list.art";
 import icons from "../assets/base64";
