@@ -7,6 +7,7 @@ import _ from "lodash";
 import axios from "../plugins/axios";
 import barTpl from "./input";
 import resultTpl from "./result-list.art";
+import icons from "../assets/base64";
 
 const nullData =
   '<div class="weui-loadmore weui-loadmore_line">\n' +
@@ -43,7 +44,7 @@ function render() {
   let opts = this.options;
   let searchbar = barTpl(opts);
   let resultId = opts.id + "_reuslt";
-  let resultHtml = '<div id="' + resultId + '" class="searchbar-result"></div>';
+  let resultHtml = `<div id="${resultId}" class="searchbar-result" style="display:none;"></div>`;
   this.$bar = $("#" + opts.id);
   this.$bar.html(searchbar);
   this.$bar.append(resultHtml);
@@ -63,27 +64,34 @@ function bindEvents() {
       _.debounce(function(event) {
         console.log("input", this.value);
         if (this.value.length) {
-          _this.$result.show();
+          // _this.$result.show();
           _this.$result.html(loading);
           _this.search(this.value);
         } else {
           _this.$result.html(nullData);
-          _this.$result.hide();
+          // _this.$result.hide();
         }
       }, 200)
     )
     .on("focus", function(e) {
       console.log("focus", e.target);
+      _this.$result.show();
+      _this.$bar.addClass("searchbar_fixed");
+    })
+    .on("blur", function(e) {
+      console.log("blur", e.target);
     });
   // 清空
   this.$clear.on("click", function() {
     _this.$result.html(nullData);
     _this.$result.hide();
+    _this.$bar.removeClass("searchbar_fixed");
   });
   // 取消
   this.$cancel.on("click", function() {
     _this.$result.html(nullData);
     _this.$result.hide();
+    _this.$bar.removeClass("searchbar_fixed");
   });
   //启用weui searchbar
   weui["searchBar"]("#" + opts.id);
@@ -100,7 +108,7 @@ function search(keyword, url = "/api/v2/organization_tree/users_search") {
     .post(url, null, {
       timeout: 4500,
       params: {
-        orgGUID: "12E00E3A-97C3-E711-8107-A4C858FD94E6",
+        orgGUID: "EAB884B7-E9EC-4825-99DA-4E93C2C76213",
         keyword: keyword
       }
     })
@@ -110,7 +118,7 @@ function search(keyword, url = "/api/v2/organization_tree/users_search") {
         return;
       }
       if (data.Result.length) {
-        let html = resultTpl(data.Result);
+        let html = resultTpl({ result: data.Result, icons });
         _this.$result.html(html);
       } else {
         _this.$result.html(nullData);

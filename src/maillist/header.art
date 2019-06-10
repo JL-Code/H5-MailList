@@ -6,18 +6,6 @@
     </li>
     {{/each}}
   </ul>
-  <div class="weui-search-bar">
-    <form class="weui-search-bar__form">
-      <div class="weui-search-bar__box">
-        <i class="weui-icon-search"></i>
-        <input type="search" class="weui-search-bar__input" placeholder="搜索">
-        <a href="javascript:" class="weui-icon-clear"></a>
-      </div>
-      <label class="weui-search-bar__label">
-        <i class="weui-icon-search"></i>
-        <span>搜索</span>
-      </label>
-    </form>
-    <a href="javascript:" class="weui-search-bar__cancel-btn">取消</a>
-  </div>
+  <!-- 搜索功能 -->
+  <div class="weui-search-bar" id="searchbar"></div>
 </div>

@@ -1,14 +1,31 @@
-<div class="weui-cells">
-    {{each $data}}
-    <div class="weui-cell">
-        <div class="weui-cell__hd"></div>
+<div class="weui-cells__title">联系人</div>
+<div class="weui-cells weui-cells_checkbox">
+    {{each $data.result}}
+    <label class="weui-cell weui-check__label">
+        <div class="weui-cell__hd">
+            <input type="checkbox" class="weui-check" data-id="{{$value.ID}}" data-user="{{$value}}"
+                name="checkbox_{{$value.ID}}" {{$value.checked?"checked=checked":""}} />
+            <i class="weui-icon-checked"></i>
+        </div>
         <div class="weui-cell__bd linkman">
             <div class="avatar">
-                <span class="white-text headline">{{$value.Name}}</span>
+                {{if $value.Avatar}}
+                <img src="{{$value.Avatar}}">
+                {{else if !$value.Avatar}}
+                <span class="white-text headline">{{$value.Name.substr(-3)}}</span>
+                {{/if}}
             </div>
-            <span class="linkman__name">{{$value.Name}}</span>
+            <span class="linkman__name"> {{$value.Name}}</span>
+            {{if $value.WorkAccount}}
+            <img class="linkman__icons" src="{{$data.icons.wechat}}">
+            {{/if}}
             <span class="linkman__desc"></span>
         </div>
-    </div>
+    </label>
     {{/each}}
+</div>
+<!-- 底部操作bar -->
+<div class="bottom-actionbar">
+    <label class="bottom-actionbar__text">已选择:3人</label>
+    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary bottom-actionbar__action">确定(3)</a>
 </div>

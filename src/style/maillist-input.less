@@ -1,11 +1,13 @@
-@import "./variable";
+@import "./variable.less";
+
+@AvatarSize: 40px;
 
 /*抄送人组件样式*/
 .maillist-result {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0 10px;
+  padding: 0 8px;
   background: #fff;
 }
 .maillist-result__item {
@@ -13,7 +15,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2px;
+  padding: 2px 7px;
 }
 .avatar {
   display: inline-flex;
@@ -22,8 +24,8 @@
   position: relative;
   text-align: center;
   vertical-align: middle;
-  height: 45px;
-  width: 45px;
+  height: @AvatarSize;
+  width: @AvatarSize;
   border-radius: 50%;
   background-color: #1989fa;
   img {
@@ -60,22 +62,22 @@
 /*css3实现的抄送人删除按钮*/
 .maillist-action_close {
   position: absolute;
-  right: -5px;
-  top: -5px;
+  right: -8px;
+  top: -3px;
   z-index: 5;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
   border-radius: 50%;
   background-color: #333333;
   &::after,
   &::before {
     position: absolute;
-    top: 8px;
-    left: 4px;
-    content: "";
+    top: 7px;
+    left: 3px;
     width: 10px;
     height: 1px;
+    content: "";
     background-color: white;
   }
   &:before {

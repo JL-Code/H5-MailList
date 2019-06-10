@@ -1,4 +1,5 @@
-@import "./variable";
+@import "./variable.less";
+@import "./weui-overwrite.less";
 
 .maillist {
   position: relative;
@@ -9,11 +10,6 @@
   width: 100%;
   line-height: 1.6;
   background-color: #f8f8f8;
-  .weui-cells {
-    margin-top: 10px;
-    font-size: @fontSize;
-    font-weight: normal;
-  }
 }
 .picker-hd__title {
   font-size: 16px;
@@ -32,6 +28,8 @@
   .weui-search-bar__cancel-btn {
     color: @primaryColor;
     font-size: @normalFontSize;
+    margin-right: 10px;
+    margin-left: 0;
   }
 }
 
@@ -54,7 +52,10 @@
 }
 
 .maillist__ft {
-  height: 50px;
+  height: auto;
+  .bottom-actionbar {
+    position: relative;
+  }
 }
 
 .maillist__user {
@@ -130,12 +131,6 @@
 
 .nav__item-active {
   color: #777777;
-}
-
-// footer
-
-.weui-btn.maillist-btn_cancel {
-  margin-top: 0;
 }
 
 // 操作条

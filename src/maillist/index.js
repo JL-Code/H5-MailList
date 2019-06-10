@@ -7,6 +7,7 @@ import mailListTpl from "./maillist";
 import maillistResultTpl from "./maillist-result";
 import linkmanAvatarTpl from "./linkman-avatar";
 import Picker from "../picker";
+import SearchBar from "../searchbar";
 
 /**
  * @description 通讯录组件
@@ -50,6 +51,8 @@ function MailList(options) {
   this.data = [];
   // 弹层
   this.picker = null;
+  // 搜索
+  this.searchbar = null;
   this.render = function(data) {
     console.log("render data", data);
     console.log("getValues", this.getValues());
@@ -89,6 +92,8 @@ function MailList(options) {
     this.updateDOM("count");
     let html = mailListTpl(source);
     this.picker.$picker.find(".weui-picker__bd").html(html);
+    // 在MailList html 加入 DOM 树后初始 searchbar
+    this.searchbar = new SearchBar("searchbar");
   };
 
   this.init();
@@ -210,7 +215,7 @@ function updateView(target, users = []) {
  */
 function fetchUser(prefix, orgGUID) {
   let url = `${prefix}/users_search?orgGUID=${orgGUID}`;
-  return axios.get(url);
+  return axios.post(url);
 }
 
 // 所有实例共享方法
@@ -323,6 +328,7 @@ function open() {
     }
   });
   picker.open();
+  //TODO: 赋值Picker、SearchBar
   this.picker = picker;
   bindEvents.call(this);
   this.request();
@@ -348,7 +354,7 @@ function updateDOM(type) {
     case "count":
       let count = this.users.lazyUsers.size + this.users.activeUsers.size;
       // let html = `已选择:${count}人`;
-      html = count ? `（${count}）确定` : "确定";
+      html = count ? `( ${count} ) 确定` : "确定";
       this.picker.$picker.find(".weui-picker-confirm").html(html);
       break;
     case "box-item":

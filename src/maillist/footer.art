@@ -1,13 +1,7 @@
-<!-- <footer class="maillist__ft">
-  <div class="actionbar">
-    <label class="actionbar__desc">已选择:</label>
-    <div class="actionbar__btns">
-      <button type="button" class="weui-btn weui-btn_mini weui-btn_primary maillist-btn_confirm">
-        确定
-      </button>
-      <button type="button" class="weui-btn weui-btn_mini weui-btn_default maillist-btn_cancel">
-        取消
-      </button>
-    </div>
+<footer class="maillist__ft">
+  <!-- 底部操作bar -->
+  <div class="bottom-actionbar">
+    <label class="bottom-actionbar__text">已选择:3人</label>
+    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary bottom-actionbar__action">确定 ( 3 )</a>
   </div>
-</footer> -->
+</footer>

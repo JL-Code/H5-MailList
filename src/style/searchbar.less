@@ -1,30 +1,52 @@
-// // 搜索框
-// .maillist__hd {
-//   .weui-search-bar::before {
-//     display: none;
-//   }
-// }
+@import "./base/fn";
+@import "./variable.less";
 
-// .weui-search-bar {
-//   padding: 10px 15px;
-//   background-color: #ffffff;
-// }
-// .weui-search-bar:after {
-//   color: #e5e5e5;
-//   border-bottom: 1px solid #e5e5e5;
-// }
-// .weui-search-bar__label,
-// .weui-search-bar__box {
-//   background-color: #f8f8f8;
-// }
+.searchbar_fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  .searchbar-result {
+    height: calc(100vh - @SearchBarHeight);
+  }
+}
 // 搜索结果
 .searchbar-result {
   position: absolute;
-  top: 45px;
+  top: @SearchBarHeight;
   left: 0;
   right: 0;
   z-index: 99;
-  height: auto;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background-color: #ffffff;
+  -webkit-overflow-scrolling: touch;
+  .weui-cells {
+    padding-bottom: @BottomActionBarHeight;
+  }
+}
+.bottom-actionbar {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 15px;
+  height: @BottomActionBarHeight;
+  background-color: #ffffff;
+  &::before {
+    .setTopLine();
+  }
+}
+.bottom-actionbar__text {
+  flex: 1;
+  font-size: @normalFontSize;
+  color: #353535e8;
+}
+.bottom-actionbar__action {
+  padding: 0 5px;
+  font-weight: 500;
 }
