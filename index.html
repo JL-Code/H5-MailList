@@ -12,6 +12,7 @@
   <script src="https://res.wx.qq.com/open/libs/weuijs/1.1.4/weui.min.js"></script>
   <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
   <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+  <script src="https://cdn.bootcss.com/lodash.js/4.17.11/lodash.min.js"></script>
   <style type="text/css">
     html,
     body,
@@ -35,17 +36,18 @@
         </div>
       </div>
     </div>
-
+    <div id="searchbar" class="weui-search-bar"></div>
 </body>
 <script>
-  const instance = new MailList.default({
+  const instance = new makit.MailList({
     el: "#maillist",
-    url: 'http://demo.highzap.com:8032/api/v2/organization_tree',
+    url: '/api/v2/organization_tree',
     queryParams: { userId: 'D7D69FDD-A13B-E811-8109-9089C5EA5EC1' },
     className: "picker-fullscreen", onConfirm: function (data) {
       console.log("onConfirm", data)
     }
   });
+  const searchBar = new makit.SearchBar("searchbar");
   // document.getElementById('picker').onclick = function () {
   //   var users = instance.getValues();
   //   console.log(instance.getUsers())

@@ -1,0 +1,14 @@
+<div class="weui-cells">
+    {{each $data}}
+    <div class="weui-cell">
+        <div class="weui-cell__hd"></div>
+        <div class="weui-cell__bd linkman">
+            <div class="avatar">
+                <span class="white-text headline">{{$value.Name}}</span>
+            </div>
+            <span class="linkman__name">{{$value.Name}}</span>
+            <span class="linkman__desc"></span>
+        </div>
+    </div>
+    {{/each}}
+</div>

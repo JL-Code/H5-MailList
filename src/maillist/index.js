@@ -89,7 +89,6 @@ function MailList(options) {
     this.updateDOM("count");
     let html = mailListTpl(source);
     this.picker.$picker.find(".weui-picker__bd").html(html);
-    weui.searchBar(".weui-search-bar");
   };
 
   this.init();
@@ -129,7 +128,9 @@ function bindEvents() {
       updateView.call(_this, e.target);
     });
   // 事件注册
-  this.picker.$picker.off("chagne", "input").on("change", "input", onChanged);
+  this.picker.$picker
+    .off("chagne", "input[type=checkbox]")
+    .on("change", "input[type=checkbox]", onChanged);
 
   // 订阅了用户勾选改变事件
   function onChanged(e) {

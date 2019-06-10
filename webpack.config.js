@@ -3,34 +3,23 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin"); //文件压缩
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;  //webpack 打包分析
-// const os = require("os");
-
-//获取本机IP,当IP 设置为本机IP 后, 局域网内其它人可以通过 IP+端口,访问本机开发环境.
-
-// function getLocalIps(flagIpv6) {
-//   var ifaces = os.networkInterfaces();
-//   var ips = [];
-//   var func = function (details) {
-//     if (!flagIpv6 && details.family === "IPv6") {
-//       return;
-//     }
-//     ips.push(details.address);
-//   };
-//   for (var dev in ifaces) {
-//     ifaces[dev].forEach(func);
-//   }
-//   return ips;
-// }
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin; //webpack 打包分析
 
 module.exports = {
-  entry: {
-    app: "./src/index.js"
-  },
+  entry: "./src/index.js",
   devtool: "inline-source-map",
   // devServer 对象告知 webpack-dev-server，在 localhost:8080 下建立服务，将 dist 目录下的文件，作为可访问文件。
   // 配合在package.json scripts中添加 "start": "webpack-dev-server --open" 运行命令：npm run start
   devServer: {
+    // https://webpack.js.org/configuration/dev-server/#devserver-stats-)
+    stats: {
+      all: false,
+      modules: true,
+      maxModules: 0,
+      errors: true,
+      warnings: true
+    },
     contentBase: "./dist",
     // disableHostCheck: true, //禁用主机检查
     // host: getLocalIps()[0],
@@ -70,9 +59,9 @@ module.exports = {
       title: "H5 MailList Component",
       filename: "index.html",
       template: path.resolve(__dirname, "index.html")
-    }),
+    })
     // 引入 webpack 打包分析插件 https://www.jianshu.com/p/e85d6a4f68c0
-    new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin()
     // new UglifyJSPlugin({
     //   sourceMap: true
     // })
@@ -109,20 +98,23 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "maillist.js",
+    filename: "makit.js",
     // 暴露 library refs:https://www.webpackjs.com/guides/author-libraries/
-    library: "MailList",
+    library: {
+      root: "makit",
+    },
     /**
-     * 变量：作为一个全局变量，通过 script 标签来访问（libraryTarget:'var'）。
-      this：通过 this 对象访问（libraryTarget:'this'）。
-      window：通过 window 对象访问，在浏览器中（libraryTarget:'window'）。
-      UMD：在 AMD 或 CommonJS 的 require 之后可访问（libraryTarget:'umd'）。
+     *1. 变量：作为一个全局变量，通过 script 标签来访问（libraryTarget:'var'）。
+     *2. this：通过 this 对象访问（libraryTarget:'this'）。
+     *3. window：通过 window 对象访问，在浏览器中（libraryTarget:'window'）。
+     *4. UMD：在 AMD 或 CommonJS 的 require 之后可访问（libraryTarget:'umd'）。
+     * // libraryTarget: "umd",
+       // refs:https://webpack.js.org/configuration/output/#outputglobalobject
+       // globalObject: 'this'
+       // https://webpack.docschina.org/configuration/output/#output-umdnameddefine
+       // umdNamedDefine: true
      */
-    libraryTarget: "umd",
-    // refs:https://webpack.js.org/configuration/output/#outputglobalobject
-    // globalObject: 'this'
-    // https://webpack.docschina.org/configuration/output/#output-umdnameddefine
-    umdNamedDefine: true
+    libraryTarget: "umd"
   },
   // 外部化 lodash 不打包lodash
   externals: {

@@ -1,25 +1,23 @@
 <div class="maillist__hd">
-  <nav class="crumb-nav">
-    <ul class="nav-list">
-      {{each Navs}}
-      <li class="nav__item {{if $value.active}}nav__item-active{{/if}}" data-id="{{ $value.id }}">
-        {{ $value.text }}
-      </li>
-      {{/each}}
-    </ul>
-  </nav>
-  <!-- <div class="weui-search-bar">
+  <ul class="nav-list">
+    {{each Navs}}
+    <li class="nav__item {{if $value.active}}nav__item-active{{/if}}" data-id="{{ $value.id }}">
+      {{ $value.text }}
+    </li>
+    {{/each}}
+  </ul>
+  <div class="weui-search-bar">
     <form class="weui-search-bar__form">
       <div class="weui-search-bar__box">
         <i class="weui-icon-search"></i>
-        <input type="search" class="weui-search-bar__input" placeholder="搜索联系人">
+        <input type="search" class="weui-search-bar__input" placeholder="搜索">
         <a href="javascript:" class="weui-icon-clear"></a>
       </div>
       <label class="weui-search-bar__label">
         <i class="weui-icon-search"></i>
-        <span>搜索联系人</span>
+        <span>搜索</span>
       </label>
     </form>
     <a href="javascript:" class="weui-search-bar__cancel-btn">取消</a>
-  </div> -->
+  </div>
 </div>
