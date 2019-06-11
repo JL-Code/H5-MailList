@@ -14,7 +14,7 @@
           <i class="fa {{node.Icon}}" aria-hidden="true"></i>
         </div>
         <div class="weui-cell__bd">
-          <span>{{ node.Name +'('+ node.TotalStaff+')人'}}</span>
+          <span>{{ node.Name +'('+ node.TotalStaff+'人)'}}</span>
         </div>
         <!-- </label> -->
         <div class="weui-cell__ft">
