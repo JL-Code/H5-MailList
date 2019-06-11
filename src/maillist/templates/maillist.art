@@ -30,9 +30,9 @@
     <!-- 当前（公司|部门）下辖的人员-->
     <div class="weui-cells weui-cells_checkbox maillist__user">
       {{each $data.Users user}}
-      <label class="weui-cell weui-check__label">
+      <label class="weui-cell weui-check__label" for="checkbox_{{user.ID}}">
         <div class="weui-cell__hd">
-          <input type="checkbox" class="weui-check" data-search="false" data-id="{{user.ID}}" data-user="{{user}}"
+          <input type="checkbox" id="checkbox_{{user.ID}}" class="weui-check" data-search="false" data-id="{{user.ID}}" data-user="{{user}}"
             name="checkbox_{{user.ID}}" {{user.checked?"checked=checked":""}} />
           <i class="weui-icon-checked"></i>
         </div>

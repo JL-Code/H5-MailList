@@ -1,10 +1,10 @@
 <div class="weui-cells__title">联系人</div>
 <div class="weui-cells weui-cells_checkbox no-after">
     {{each $data.result}}
-    <label class="weui-cell weui-check__label">
+    <label class="weui-cell weui-check__label" for="checkbox_{{user.ID}}">
         <div class="weui-cell__hd">
             <input type="checkbox" class="weui-check search-check" data-search="true" data-id="{{$value.ID}}" data-user="{{$value}}"
-                name="checkbox_{{$value.ID}}" {{$value.checked?"checked=checked":""}} />
+                name="checkbox_{{$value.ID}}" id="checkbox_{{user.ID}}" {{$value.checked?"checked=checked":""}} />
             <i class="weui-icon-checked"></i>
         </div>
         <div class="weui-cell__bd linkman">
