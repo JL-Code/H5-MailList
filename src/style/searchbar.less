@@ -1,0 +1,53 @@
+@import "./base/fn";
+@import "./variable.less";
+
+.searchbar_fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  .searchbar-result {
+    display: block;
+    height: calc(100vh - @SearchBarHeight);
+  }
+}
+// 搜索结果
+.searchbar-result {
+  display: none;
+  position: absolute;
+  top: @SearchBarHeight;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #ffffff;
+  -webkit-overflow-scrolling: touch;
+  .weui-cells {
+    padding-bottom: @BottomActionBarHeight;
+  }
+}
+.bottom-actionbar {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  padding: 0 15px;
+  height: @BottomActionBarHeight;
+  background-color: #ffffff;
+  &::before {
+    .setTopLine();
+  }
+}
+.bottom-actionbar__text {
+  flex: 1;
+  font-size: @normalFontSize;
+  color: #353535e8;
+}
+.bottom-actionbar__action {
+  font-weight: 500;
+}

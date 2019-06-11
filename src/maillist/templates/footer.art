@@ -1,0 +1,7 @@
+<footer class="maillist__ft">
+  <!-- 底部操作bar -->
+  <!-- <div class="bottom-actionbar">
+    <label class="bottom-actionbar__text">已选择:3人</label>
+    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary bottom-actionbar__action">确定 ( 3 )</a>
+  </div> -->
+</footer>

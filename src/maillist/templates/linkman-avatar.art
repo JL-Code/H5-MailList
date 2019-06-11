@@ -1,0 +1,14 @@
+{{each Users}}
+<div class="maillist-result__item">
+    <div class="avatar">
+        <a class="maillist-action maillist-action_close" data-id="{{$value.ID}}" href="javascript:;"></a>
+        {{if $value.Avatar}}
+        <img src="{{$value.Avatar}}">
+        {{else if !$value.Avatar}}
+        <span class="headline white-text">{{$value.Name.substr(-3)}}</span>
+        {{/if}}
+    </div>
+    <span class="avatar-desc">{{$value.Name}}</span>
+</div>
+{{/each}}
+<a href="javascript:;" class="maillist-action maillist-action_add"></a>

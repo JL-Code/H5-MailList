@@ -1,3 +1,6 @@
+@import "./variable.less";
+@import "./weui-overwrite.less";
+
 .maillist {
   position: relative;
   display: flex;
@@ -7,27 +10,52 @@
   width: 100%;
   line-height: 1.6;
   background-color: #f8f8f8;
-  .weui-cells {
-    margin-top: 10px;
+}
+.picker-hd__title {
+  font-size: 16px;
+}
+.picker-fullscreen {
+  .weui-picker__hd {
+    font-size: 15px;
+  }
+
+  .weui-picker__action {
+    color: @primaryColor;
+    &:first-child {
+      color: @primaryColor;
+    }
+  }
+  .weui-search-bar__cancel-btn {
+    color: @primaryColor;
+    font-size: @normalFontSize;
+    margin-right: 10px;
+    margin-left: 0;
   }
 }
 
 .maillist__hd {
   position: relative;
-  height: 89px;
+  height: 88px;
 }
 
 .maillist__bd {
   flex: 1;
+  .weui-cell__bd {
+    font-size: @normalFontSize;
+  }
 }
 
 .maillist__bd-listview {
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .maillist__ft {
-  height: 50px;
+  height: auto;
+  .bottom-actionbar {
+    position: relative;
+  }
 }
 
 .maillist__user {
@@ -43,8 +71,8 @@
   display: flex;
   position: relative;
   border-left: 1px solid #e5e5e5;
-  color: #1296db;
-  font-size: 14px;
+  color: @primaryColor;
+  font-size: @normalFontSize;
   font-weight: 400;
   vertical-align: middle;
 }
@@ -56,63 +84,30 @@
   width: 18px;
   margin: 0 5px 0 8px;
   background-size: 100%;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABjUlEQVRoQ+1Y0VHDMAyVmKBlAfig/QU2YQR+CT8wAV2imYMRGIH+ttxRFmg7QcVdLwm+HDnZzrNLifJrW9bTk5QnM534xyfuPzUARvPlPTO9MPFlClBCshY6e94VV69I+w2Acbn8TOV87bCIvG8fp7dJAJyXK0Ea7rK1KSbQtG2M/TsAqEi1A4OyWzPcyQDqIgOgFKYxoHUuS6HYFNIiG7uOag5qF4p1UDuXDMB4vloz04XmQJ91IVlsi+lNHxvtsz9irvy4Y9rPmPgaeUGjg0gWwvy0e5i8Ie2ruiR1F+kLxgD4RhA1b7TnimwMIOcNd67IBgAt1+t2PDwAvjmv7Qv9oXV1w2AGNMd81w1ANVsPj4FQ6uuUsi7UKq7sbRSpdl1VG1wDsSl0kBLEs76SXYS+Dqq2eqLMBsC3vYbuMwChEUPvNwZ8I2rzgBMpmwd808bd92ekRIzzv50J/SEOdx5AahiXiWwMjBK92GUDgMr5oxWxAagigKyloHkAxcDR5gEUgFR2VDWa6mKU3W+KlU1Atmn1bwAAAABJRU5ErkJggg==");
+  background-image: url(@orgIcon);
 }
-// 搜索框
-.weui-search-bar {
-  background-color: #ffffff;
-}
-.weui-search-bar__label,
-.weui-search-bar__box {
-  background-color: #f8f8f8;
-}
-// 搜索结果
-.search-result {
-  position: fixed;
-  top: 45px;
-  left: 0;
-  bottom: 0;
-  z-index: 99;
-  width: 100%;
-  overflow: hidden;
-  background-color: #ffffff;
-}
+
 /*面包屑导航*/
-.crumb-nav {
-  position: relative;
-
-  &::after {
-    bottom: 0;
-    border-bottom: 1px solid #e5e5e5;
-    transform-origin: 0 100%;
-    transform: scaleY(0.5);
-    content: " ";
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 1px;
-    color: #e5e5e5;
-    z-index: 2;
-  }
-}
-
 .nav-list {
-  padding: 0 15px;
-  height: 45px;
-  line-height: 50px;
-  overflow-x: auto;
-  overflow-y: hidden;
   white-space: nowrap;
-  list-style: none;
+  width: 100%;
+  padding: 0 15px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  //hack 父级font-size设置0可以消除子级inline-block元素之间的缝隙 https://www.jianshu.com/p/025b947b5c00
+  font-size: 0;
+  -webkit-overflow-scrolling: touch;
   background-color: #ffffff;
 }
 
 .nav__item {
   position: relative;
-  font-size: 16px;
-  color: #2d9fde;
   display: inline-block;
-  padding-right: 30px;
+  height: 44px;
+  line-height: 44px;
+  font-size: @normalFontSize;
+  color: @primaryColor;
+  padding-right: 20px;
 
   &::after {
     content: " ";
@@ -125,8 +120,8 @@
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     position: absolute;
     top: 50%;
-    right: 15px;
-    margin-top: -4px;
+    right: 7px;
+    margin-top: -5px;
   }
 
   &:last-child::after {
@@ -136,12 +131,6 @@
 
 .nav__item-active {
   color: #777777;
-}
-
-// footer
-
-.weui-btn.maillist-btn_cancel {
-  margin-top: 0;
 }
 
 // 操作条
@@ -168,11 +157,12 @@
   flex: 1;
   line-height: 30px;
 }
-
 .actionbar__btns {
   line-height: 30px;
 }
-
+.maillist-btn_cancel::after {
+  width: 199%;
+}
 //picker
 .picker-fullscreen {
   .weui-picker {
@@ -181,20 +171,27 @@
   }
 
   .weui-picker__bd {
-    // height: calc(100vh - 45px);
-    height: 100vh;
+    height: calc(100vh - 43px);
   }
 }
 
-// 联系人（用户）
 .linkman {
+  display: flex;
+  align-items: center;
 }
 .linkman__name {
-  vertical-align: middle;
+  padding: 0 10px;
 }
 .linkman__icons {
   display: inline-block;
   height: 20px;
   width: 20px;
   vertical-align: middle;
+}
+.linkman__desc {
+  font-size: 10px;
+}
+/*隐藏伪类元素*/
+.no-after::after {
+  display: none;
 }

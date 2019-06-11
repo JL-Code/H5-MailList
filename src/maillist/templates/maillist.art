@@ -4,20 +4,17 @@
   <!-- Header end -->
   <!-- Body start-->
   <div class="maillist__bd maillist__bd-listview">
+    <!-- 公司|部门 -->
     {{if $data.Children && $data.Children.length}}
     <div class="weui-cells weui-cells_checkbox">
       {{each $data.Children node index}}
       <div class="weui-cell organization" data-id="{{ node.ID }}" data-node="{{ node }}"
         data-code="{{node.HierarchyCode}}">
-        <!-- <label class="weui-cell weui-cell__bd"> -->
-        <!-- {{if node.isEnd}}
-          <div class="weui-cell__hd">
-            <input type="checkbox" class="weui-check" name="checkbox1" />
-            <i class="weui-icon-checked"></i>
-          </div>
-          {{/if}} -->
+        <div class="weui-cell__hd">
+          <i class="fa {{node.Icon}}" aria-hidden="true"></i>
+        </div>
         <div class="weui-cell__bd">
-          {{ node.Name }}
+          <span>{{ node.Name +'('+ node.TotalStaff+')人'}}</span>
         </div>
         <!-- </label> -->
         <div class="weui-cell__ft">
@@ -30,20 +27,28 @@
     </div>
     {{/if}}
     {{if $data.Users && $data.Users.length}}
-    <!-- 当前节点（公司|部门）下辖的人员-->
+    <!-- 当前（公司|部门）下辖的人员-->
     <div class="weui-cells weui-cells_checkbox maillist__user">
       {{each $data.Users user}}
       <label class="weui-cell weui-check__label">
         <div class="weui-cell__hd">
-          <input type="checkbox" class="weui-check" data-id="{{user.ID}}" data-user="{{user}}"
-            name="checkbox_{{user.ID}}" />
+          <input type="checkbox" class="weui-check" data-search="false" data-id="{{user.ID}}" data-user="{{user}}"
+            name="checkbox_{{user.ID}}" {{user.checked?"checked=checked":""}} />
           <i class="weui-icon-checked"></i>
         </div>
         <div class="weui-cell__bd linkman">
+          <div class="avatar">
+            {{if user.Avatar}}
+            <img src="{{user.Avatar}}">
+            {{else if !user.Avatar}}
+            <span class="white-text headline">{{user.Name.substr(-3)}}</span>
+            {{/if}}
+          </div>
           <span class="linkman__name"> {{user.Name}}</span>
           {{if user.WorkAccount}}
           <img class="linkman__icons" src="{{$data.icons.wechat}}">
           {{/if}}
+          <span class="linkman__desc"></span>
         </div>
       </label>
       {{/each}}

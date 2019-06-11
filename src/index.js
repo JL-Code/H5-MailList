@@ -1,6 +1,6 @@
-import "./style/site";
-import "./style/maillist";
+import "./style/maillist.less";
+import "./style/maillist-input.less";
+import "./style/searchbar.less";
+import MailList from "./maillist";
 
-import Picker from "./picker"
-
-export { Picker };
+export { MailList };

@@ -1,0 +1,17 @@
+<!--搜索bar开始-->
+<a href="javascript:" class="weui-search-bar__cancel-btn">返回</a>
+<form class="weui-search-bar__form">
+    <div class="weui-search-bar__box">
+        <i class="weui-icon-search"></i>
+        <input type="search" class="weui-search-bar__input" placeholder="搜索" required="">
+        <a href="javascript:" class="weui-icon-clear"></a>
+    </div>
+    <label class="weui-search-bar__label">
+        <i class="weui-icon-search"></i>
+        <span>搜索</span>
+    </label>
+</form>
+<!--搜索bar结束-->
+<!-- 搜索结果面板 开始 -->
+<div class="searchbar-result"></div>
+<!-- 搜索结果面板 结束 -->
