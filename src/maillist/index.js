@@ -100,11 +100,21 @@ function MailList(options) {
     this.picker.$picker.find(".weui-picker__bd").html(html);
     const _this = this;
     // 在MailList html 加入 DOM 树后初始 searchbar
-    this.searchbar = new SearchBar("#searchbar");
+    this.searchbar = new SearchBar({
+      el: "#searchbar",
+      url: "/api/v2/organization_tree/users_search",
+      method: "get"
+    });
     // 监听（listen）searchbar 的事件。
     EventBus.on("search", function(value) {
-      _this.searchbar.search(value);
-      console.log("navs", _this.navs);
+      let currentNav = _this.navs.find(nav => nav.active);
+      let data = {
+        params: {
+          orgGUID: currentNav.id,
+          keyword: value
+        }
+      };
+      _this.searchbar.search(data);
     });
   };
 
@@ -235,7 +245,7 @@ function updateView(target, users = []) {
  */
 function fetchUser(prefix, orgGUID) {
   let url = `${prefix}/users_search?orgGUID=${orgGUID}`;
-  return axios.post(url);
+  return axios.get(url);
 }
 
 // 所有实例共享方法
