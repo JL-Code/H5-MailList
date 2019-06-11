@@ -1,5 +1,5 @@
 <!--搜索bar开始-->
-<a href="javascript:" class="weui-search-bar__cancel-btn">取消</a>
+<a href="javascript:" class="weui-search-bar__cancel-btn">返回</a>
 <form class="weui-search-bar__form">
     <div class="weui-search-bar__box">
         <i class="weui-icon-search"></i>
@@ -12,3 +12,6 @@
     </label>
 </form>
 <!--搜索bar结束-->
+<!-- 搜索结果面板 开始 -->
+<div class="searchbar-result"></div>
+<!-- 搜索结果面板 结束 -->

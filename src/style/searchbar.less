@@ -8,11 +8,13 @@
   right: 0;
   z-index: 100;
   .searchbar-result {
+    display: block;
     height: calc(100vh - @SearchBarHeight);
   }
 }
 // 搜索结果
 .searchbar-result {
+  display: none;
   position: absolute;
   top: @SearchBarHeight;
   left: 0;
@@ -33,7 +35,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 99;
   padding: 0 15px;
   height: @BottomActionBarHeight;
   background-color: #ffffff;
@@ -47,6 +49,5 @@
   color: #353535e8;
 }
 .bottom-actionbar__action {
-  padding: 0 5px;
   font-weight: 500;
 }

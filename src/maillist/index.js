@@ -1,11 +1,10 @@
 "use strict";
-
+import EventBus from "./event-bus";
 import axios from "../plugins/axios";
 import { findNode } from "./maillist.util";
 import icons from "../assets/base64";
-import Picker from "../picker";
-import SearchBar from "../searchbar";
-
+import Picker from "./components/picker";
+import { SearchBar } from "./components/searchbar";
 import mailListTpl from "./templates/maillist";
 import maillistResultTpl from "./templates/maillist-result";
 import linkmanAvatarTpl from "./templates/linkman-avatar";
@@ -20,6 +19,7 @@ import linkmanAvatarTpl from "./templates/linkman-avatar";
     selectedDepartmentIds: [], // 非必填，已选部门ID列表。用于多次选人时可重入
     selectedUserIds: [] // 非必填，已选用户ID列表。用于多次选人时可重入
   };
+ * @todo //TODO: searchbar、picker、mailist通信问题。
  */
 function MailList(options) {
   // TODO: 挂载元素 考虑取消挂载在实例上，而采用私有变量
@@ -55,8 +55,6 @@ function MailList(options) {
   // 搜索
   this.searchbar = null;
   this.render = function(data) {
-    console.log("render data", data);
-    console.log("getValues", this.getValues());
     // TODO: 待优化数据结构和更新机制
     let source = {
       icons: icons,
@@ -93,8 +91,14 @@ function MailList(options) {
     this.updateDOM("count");
     let html = mailListTpl(source);
     this.picker.$picker.find(".weui-picker__bd").html(html);
+    const _this = this;
     // 在MailList html 加入 DOM 树后初始 searchbar
-    this.searchbar = new SearchBar("searchbar");
+    this.searchbar = new SearchBar("#searchbar");
+    // 监听（listen）searchbar 的事件。
+    EventBus.on("search", function(value) {
+      _this.searchbar.search(value);
+      console.log("navs", _this.navs);
+    });
   };
 
   this.init();
@@ -131,7 +135,8 @@ function bindEvents() {
         });
     })
     .on("click", ".nav__item", function(e) {
-      updateView.call(_this, e.target);
+      let target = e.target.closest(".nav__item");
+      updateView.call(_this, target);
     });
   // 事件注册
   this.picker.$picker
@@ -140,6 +145,8 @@ function bindEvents() {
 
   // 订阅了用户勾选改变事件
   function onChanged(e) {
+    console.debug("input:change", e.target);
+    // console.debug("dataset", JSON.parse(e.target.dataset.search));
     let target = e.target;
     let dataset = target.dataset;
     // 用户的操作都在activeUsers中
@@ -155,6 +162,8 @@ function bindEvents() {
     }
     // 派发更新
     _this.updateDOM("count");
+    // 更新当前组织下的用户列表
+    // _this.updateView();
   }
 }
 
@@ -169,7 +178,6 @@ function updateNavs(node) {
   // 更新面包屑导航
   let nav = {
     id: node.ID,
-    // text: `${node.Name}(${node.Users.length})`,
     text: node.Name,
     active: true
   };
@@ -192,7 +200,11 @@ function updateNavs(node) {
 
   return this.navs;
 }
-// 更新用户列表DOM
+/**
+ * 更新用户列表DOM
+ * @param {Element} target
+ * @param {Array} users 用户数据
+ */
 function updateView(target, users = []) {
   let dataset = target.dataset;
   let node = findNode(dataset.id, this.data);

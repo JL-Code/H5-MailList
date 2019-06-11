@@ -4,134 +4,149 @@
  * @Date: 2019-05-21 20:49:02
  */
 import _ from "lodash";
+import EventBus from "../../event-bus";
+import icons from "../../../assets/base64";
 import axios from "../../../plugins/axios";
-import barTpl from "./input";
+import inputTpl from "./input.art";
 import resultTpl from "./result-list.art";
-import icons from "../assets/base64";
 
 const nullData =
   '<div class="weui-loadmore weui-loadmore_line">\n' +
   '            <span class="weui-loadmore__tips">暂无数据</span>\n' +
   "        </div>";
-const loading =
+const loadingHtml =
   '<div class="weui-loadmore">\n' +
   '            <i class="weui-loading"></i>\n' +
   '            <span class="weui-loadmore__tips">正在加载</span>\n' +
   "        </div>";
 
-/**
- * @description 搜索框
- * @param options {id:'',resultId:''} | id string
- * @constructor
- */
-function SearchBar(options) {
-  if (typeof options === "string") {
-    options = { id: options, resultId: options + "_result" };
+export class SearchBar {
+  constructor(selector) {
+    this.selector = selector;
+    // 远程检索到的数据
+    this.searchResultData = [];
+
+    this.render();
   }
-  let defaults = {
-    id: ""
-  };
-  let opts = _.merge(defaults, options);
-  this.options = opts;
-  this.render();
-  this.bindEvents();
-}
 
-/**
- * @description 渲染
- */
-function render() {
-  let opts = this.options;
-  let searchbar = barTpl(opts);
-  let resultId = opts.id + "_reuslt";
-  let resultHtml = `<div id="${resultId}" class="searchbar-result" style="display:none;"></div>`;
-  this.$bar = $("#" + opts.id);
-  this.$bar.html(searchbar);
-  this.$bar.append(resultHtml);
-  this.$result = $("#" + resultId);
-  this.$text = this.$bar.find(".weui-search-bar__label");
-  this.$input = this.$bar.find(".weui-search-bar__input");
-  this.$clear = this.$bar.find(".weui-icon-clear");
-  this.$cancel = this.$bar.find(".weui-search-bar__cancel-btn");
-}
+  static create(selector) {
+    return new SearchBar(selector);
+  }
 
-function bindEvents() {
-  let _this = this;
-  let opts = _this.options;
-  this.$input
-    .on(
-      "input",
-      _.debounce(function(event) {
-        console.log("input", this.value);
-        if (this.value.length) {
-          // _this.$result.show();
-          _this.$result.html(loading);
-          _this.search(this.value);
-        } else {
-          _this.$result.html(nullData);
-          // _this.$result.hide();
+  /**
+   * @description DOM渲染函数
+   */
+  render() {
+    // TODO: 暂不考虑批量组件
+    const $el = $(this.selector);
+    const inputHtml = inputTpl({});
+    console.log("inputHtml", inputHtml);
+    console.log(" $el", $el);
+    $el.append(inputHtml);
+    this.$el = $el;
+    // 调用事件绑定函数
+    this.bindEvents();
+  }
+
+  /**
+   * @description DOM元素绑定事件
+   */
+  bindEvents() {
+    console.debug("bindEvents", Date.now());
+    const _this = this;
+    const $searchBar = _this.$el;
+    const $searchResult = $searchBar.find(".searchbar-result");
+    const $searchLabel = $searchBar.find(".weui-search-bar__label");
+    const $searchInput = $searchBar.find(".weui-search-bar__input");
+    const $searchClear = $searchBar.find(".weui-icon-clear");
+    const $searchCancel = $searchBar.find(".weui-search-bar__cancel-btn");
+    this.$searchResult = $searchResult;
+    // 清空输入框
+    function cancelSearch() {
+      $searchInput.val("");
+      $searchResult.html(nullData);
+    }
+
+    $searchLabel.on("click", function() {
+      $searchBar.addClass("weui-search-bar_focusing searchbar_fixed");
+      $searchInput[0].focus();
+    });
+
+    $searchInput
+      .on("blur", function() {
+        if (!this.value.length) cancelSearch();
+      })
+      .on(
+        "input",
+        _.debounce(function(event) {
+          if (this.value.length) {
+            $searchResult.html(loadingHtml);
+            // 发送 search 事件，父级组件负责监听。
+            EventBus.fire("search", this.value);
+          } else {
+            $searchResult.html(nullData);
+          }
+        }, 200)
+      );
+
+    $searchClear.on("click", function() {
+      cancelSearch();
+      $searchInput[0].focus();
+    });
+    // 取消搜索
+    $searchCancel.on("click", function() {
+      cancelSearch();
+      $searchBar.removeClass("weui-search-bar_focusing searchbar_fixed");
+      $searchInput[0].blur();
+    });
+    $searchResult.on("click", ".bottom-actionbar__action", function(e) {
+      cancelSearch();
+      $searchBar.removeClass("weui-search-bar_focusing searchbar_fixed");
+      $searchInput[0].blur();
+    });
+    // $searchResult.on("click", "input[type=checkbox].search-check", function(
+    //   e
+    // ) {});
+  }
+
+  /**
+   * @description 搜索函数
+   */
+  search(keyword, options = { url: "/api/v2/organization_tree/users_search" }) {
+    axios
+      .post(options.url, null, {
+        timeout: 5000,
+        params: {
+          orgGUID: "EAB884B7-E9EC-4825-99DA-4E93C2C76213",
+          keyword: keyword
         }
-      }, 200)
-    )
-    .on("focus", function(e) {
-      console.log("focus", e.target);
-      _this.$result.show();
-      _this.$bar.addClass("searchbar_fixed");
-    })
-    .on("blur", function(e) {
-      console.log("blur", e.target);
-    });
-  // 清空
-  this.$clear.on("click", function() {
-    _this.$result.html(nullData);
-    _this.$result.hide();
-    _this.$bar.removeClass("searchbar_fixed");
-  });
-  // 取消
-  this.$cancel.on("click", function() {
-    _this.$result.html(nullData);
-    _this.$result.hide();
-    _this.$bar.removeClass("searchbar_fixed");
-  });
-  //启用weui searchbar
-  weui["searchBar"]("#" + opts.id);
+      })
+      .then(({ data }) => {
+        if (data.ErrCode !== 0) return Promise.reject(data);
+        this.loadData(data);
+      })
+      .catch(err => {
+        this.loadError(err);
+      });
+  }
+
+  /**
+   * @description 加载数据
+   */
+  loadData(data) {
+    this.searchResultData = data.Result;
+    if (data.Result.length) {
+      let html = resultTpl({
+        result: this.searchResultData,
+        selectdCount: 0,
+        icons
+      });
+      this.$searchResult.html(html);
+    } else {
+      this.$searchResult.html(nullData);
+    }
+  }
+  loadError(err) {
+    this.$searchResult.html(nullData);
+  }
 }
-
-/**
- * @description 发送POST请求
- * @param url
- */
-function search(keyword, url = "/api/v2/organization_tree/users_search") {
-  let _this = this;
-  //TODO: orgGUID 临时 12E00E3A-97C3-E711-8107-A4C858FD94E6 西南区域公司
-  axios
-    .post(url, null, {
-      timeout: 4500,
-      params: {
-        orgGUID: "EAB884B7-E9EC-4825-99DA-4E93C2C76213",
-        keyword: keyword
-      }
-    })
-    .then(({ data }) => {
-      if (data.ErrCode !== 0) {
-        _this.$result.html(nullData);
-        return;
-      }
-      if (data.Result.length) {
-        let html = resultTpl({ result: data.Result, icons });
-        _this.$result.html(html);
-      } else {
-        _this.$result.html(nullData);
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      _this.$result.html(nullData);
-    });
-}
-
-SearchBar.prototype.render = render;
-SearchBar.prototype.bindEvents = bindEvents;
-SearchBar.prototype.search = search;
-
-export default SearchBar;

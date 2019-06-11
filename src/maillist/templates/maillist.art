@@ -14,7 +14,7 @@
           <i class="fa {{node.Icon}}" aria-hidden="true"></i>
         </div>
         <div class="weui-cell__bd">
-          {{ node.Name }}（{{node.TotalStaff}} 人）
+          <span>{{ node.Name +'('+ node.TotalStaff+')人'}}</span>
         </div>
         <!-- </label> -->
         <div class="weui-cell__ft">
@@ -32,7 +32,7 @@
       {{each $data.Users user}}
       <label class="weui-cell weui-check__label">
         <div class="weui-cell__hd">
-          <input type="checkbox" class="weui-check" data-id="{{user.ID}}" data-user="{{user}}"
+          <input type="checkbox" class="weui-check" data-search="false" data-id="{{user.ID}}" data-user="{{user}}"
             name="checkbox_{{user.ID}}" {{user.checked?"checked=checked":""}} />
           <i class="weui-icon-checked"></i>
         </div>

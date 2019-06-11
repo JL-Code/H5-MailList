@@ -1,9 +1,9 @@
 <div class="weui-cells__title">联系人</div>
-<div class="weui-cells weui-cells_checkbox">
+<div class="weui-cells weui-cells_checkbox no-after">
     {{each $data.result}}
     <label class="weui-cell weui-check__label">
         <div class="weui-cell__hd">
-            <input type="checkbox" class="weui-check" data-id="{{$value.ID}}" data-user="{{$value}}"
+            <input type="checkbox" class="weui-check search-check" data-search="true" data-id="{{$value.ID}}" data-user="{{$value}}"
                 name="checkbox_{{$value.ID}}" {{$value.checked?"checked=checked":""}} />
             <i class="weui-icon-checked"></i>
         </div>
@@ -26,6 +26,6 @@
 </div>
 <!-- 底部操作bar -->
 <div class="bottom-actionbar">
-    <label class="bottom-actionbar__text">已选择:3人</label>
-    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary bottom-actionbar__action">确定(3)</a>
+    <label class="bottom-actionbar__text"></label>
+    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary bottom-actionbar__action">确定</a>
 </div>
