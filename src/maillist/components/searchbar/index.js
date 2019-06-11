@@ -22,16 +22,15 @@ const loadingHtml =
   "        </div>";
 
 export class SearchBar {
-  constructor(selector) {
-    this.selector = selector;
+  constructor(options) {
+    this.options = _.assign({ method: "get" }, options);
     // 远程检索到的数据
     this.searchResultData = [];
-
     this.render();
   }
 
-  static create(selector) {
-    return new SearchBar(selector);
+  static create(options) {
+    return new SearchBar(options);
   }
 
   /**
@@ -39,7 +38,7 @@ export class SearchBar {
    */
   render() {
     // TODO: 暂不考虑批量组件
-    const $el = $(this.selector);
+    const $el = $(this.options.el);
     const inputHtml = inputTpl({});
     console.log("inputHtml", inputHtml);
     console.log(" $el", $el);
@@ -113,15 +112,14 @@ export class SearchBar {
   /**
    * @description 搜索函数
    */
-  search(keyword, options = { url: "/api/v2/organization_tree/users_search" }) {
-    axios
-      .post(options.url, null, {
-        timeout: 5000,
-        params: {
-          orgGUID: "EAB884B7-E9EC-4825-99DA-4E93C2C76213",
-          keyword: keyword
-        }
-      })
+  search(params = {}) {
+    let opts = this.options;
+    let config = {
+      url: opts.url,
+      method: opts.method,
+      ...params
+    };
+    axios(config)
       .then(({ data }) => {
         if (data.ErrCode !== 0) return Promise.reject(data);
         this.loadData(data);
