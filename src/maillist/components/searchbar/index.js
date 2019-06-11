@@ -1,7 +1,8 @@
 /*
- * @Description:
+ * @Description: MailList组件的子组件 负责实现搜索功能。
  * @Author: jiangy
  * @Date: 2019-05-21 20:49:02
+ * @Version 1.1.0
  */
 import _ from "lodash";
 import EventBus from "../../event-bus";

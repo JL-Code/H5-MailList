@@ -1,3 +1,10 @@
+/*
+ * @Description: MailList 通讯录组件
+ * @Author: jiangy
+ * @Date: 2019-06-10 16:45:42
+ * @Version:1.1.0
+ */
+
 "use strict";
 import EventBus from "./event-bus";
 import axios from "../plugins/axios";
