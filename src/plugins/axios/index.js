@@ -1,7 +1,7 @@
 import axios from "axios";
 // 添加请求拦截
 axios.interceptors.request.use(
-  config => {
+  function(config) {
     // 附加令牌信息
     // try {
     //   let info = util.cookies.get(settings.constants.TOKEN, true);
@@ -21,16 +21,16 @@ axios.interceptors.request.use(
     // }
     return config;
   },
-  error => {
+  function(error) {
     return Promise.reject(error);
   }
 );
 // 添加响应拦截
 axios.interceptors.response.use(
-  response => {
+  function(response) {
     return response;
   },
-  error => {
+  function(error) {
     // 1.请求已完成 得到服务器响应 但是http状态码不是2xx范围内
     if (error.response) {
       switch (error.response.status) {

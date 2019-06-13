@@ -16,6 +16,10 @@ import mailListTpl from "./templates/maillist";
 import maillistResultTpl from "./templates/maillist-result";
 import linkmanAvatarTpl from "./templates/linkman-avatar";
 
+import "../style/maillist.less";
+import "../style/maillist-input.less";
+import "../style/searchbar.less";
+
 /**
  * @description 通讯录组件
  * @param {Object} options 参数选项
@@ -28,7 +32,7 @@ import linkmanAvatarTpl from "./templates/linkman-avatar";
   };
  * @todo //TODO: searchbar、picker、mailist通信问题。
  */
-function MailList(options) {
+export function MailList(options) {
   // TODO: 挂载元素 考虑取消挂载在实例上，而采用私有变量
   // 配置参数
   this.options = $.extend(
@@ -415,5 +419,3 @@ MailList.prototype.getValues = getValues;
 MailList.prototype.getUsers = getUsers;
 MailList.prototype.remove = remove;
 MailList.prototype.updateUsers = updateUsers;
-
-export default MailList;
