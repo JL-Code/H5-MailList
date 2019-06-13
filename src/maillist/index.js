@@ -140,7 +140,7 @@ function bindEvents() {
       let target = e.target.closest(".weui-cell.organization");
       let dataset = target.dataset;
       let loading = weui.loading("加载中");
-      fetchUser(_this.options.url, dataset.id)
+      fetchUser(_this.options.server + _this.options.url, dataset.id)
         .then(res => {
           loading.hide();
           if (res.data.ErrCode !== 0) {
@@ -249,7 +249,7 @@ function updateView(target, users = []) {
  * @param {String} code 组织层级编码
  */
 function fetchUser(prefix, orgGUID) {
-  let url = `${server}/${prefix}/users_search?orgGUID=${orgGUID}`;
+  let url = `${prefix}/users_search?orgGUID=${orgGUID}`;
   return axios.get(url);
 }
 

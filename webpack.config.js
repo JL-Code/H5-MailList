@@ -94,7 +94,7 @@ module.exports = {
       filename: "index.html",
       template: path.resolve(__dirname, "index.html")
     }),
-    new UglifyJSPlugin(),
-    new BundleAnalyzerPlugin()
+    // new UglifyJSPlugin(),
+    // new BundleAnalyzerPlugin()
   ]
 };
