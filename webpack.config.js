@@ -102,6 +102,7 @@ const production = process.env.NODE;
 if (production === "production") {
   webpackConfig.plugins.push(
     new UglifyJSPlugin({
+      sourceMap: true,
       uglifyOptions: {
         minimize: true,
         compress: {
