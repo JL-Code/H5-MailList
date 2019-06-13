@@ -6,14 +6,15 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin"); //文件压缩
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin; //webpack 打包分析
 
-module.exports = {
+const webpackConfig = {
   entry: "./src/maillist/index.js",
-  mode: "production",
+  mode: process.env.NODE,
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "makit.js",
     libraryTarget: "umd",
-    library: "makit"
+    library: "makit",
+    umdNamedDefine: true
   },
   devtool: "source-map",
   devServer: {
@@ -93,8 +94,14 @@ module.exports = {
       title: "H5 MailList Component",
       filename: "index.html",
       template: path.resolve(__dirname, "index.html")
-    }),
-    // new UglifyJSPlugin(),
-    // new BundleAnalyzerPlugin()
+    })
   ]
 };
+// 生产环境
+const production = process.env.NODE;
+if (production === "production") {
+  webpackConfig.plugins.push(
+    new UglifyJSPlugin({ uglifyOptions: { minimize: true } })
+  );
+}
+module.exports = webpackConfig;

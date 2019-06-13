@@ -8,9 +8,9 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "webpack",
+    "build": "NODE=production webpack",
     "watch": "webpack --watch",
-    "start": "webpack-dev-server --nolog"
+    "start": "NODE=development webpack-dev-server --nolog"
   },
   "main": "dist/makit.js",
   "author": "jiangy",
