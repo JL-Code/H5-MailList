@@ -42,6 +42,7 @@ export function MailList(options) {
       mode: "multi",
       type: ["user"],
       label: "联系人",
+      server: "",
       url: "",
       queryParams: {},
       selectedUserIds: [],
@@ -106,7 +107,7 @@ export function MailList(options) {
     // 在MailList html 加入 DOM 树后初始 searchbar
     this.searchbar = new SearchBar({
       el: "#searchbar",
-      url: "/api/v2/organization_tree/users_search",
+      url: `${_this.options.server}/api/v2/organization_tree/users_search`,
       method: "get"
     });
     // 监听（listen）searchbar 的事件。
@@ -248,7 +249,7 @@ function updateView(target, users = []) {
  * @param {String} code 组织层级编码
  */
 function fetchUser(prefix, orgGUID) {
-  let url = `${prefix}/users_search?orgGUID=${orgGUID}`;
+  let url = `${server}/${prefix}/users_search?orgGUID=${orgGUID}`;
   return axios.get(url);
 }
 
@@ -280,7 +281,7 @@ function init() {
 
 // 从远程获取数据（在open后请求数据，且在生命周期内只请求一次）
 function request() {
-  let url = this.options.url;
+  let url = this.options.server + this.options.url;
   if (!url) return;
   let loading = weui.loading("加载组织中");
   axios
@@ -406,7 +407,6 @@ function updateDOM(type) {
 /**
  * 将成员放置在prototype属性上后实质是将成员放到原型对象上。
  * ```js
- *
  * ```
  * 所有注意通过此原型创建的所有实例都共享这些成员，也意味着所有一旦这些成员被修改那么所有的实例对象都会受到影响。
  */
