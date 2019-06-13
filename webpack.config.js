@@ -101,7 +101,15 @@ const webpackConfig = {
 const production = process.env.NODE;
 if (production === "production") {
   webpackConfig.plugins.push(
-    new UglifyJSPlugin({ uglifyOptions: { minimize: true } })
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        minimize: true,
+        compress: {
+          drop_debugger: true,
+          drop_console: true
+        }
+      }
+    })
   );
 }
 module.exports = webpackConfig;
