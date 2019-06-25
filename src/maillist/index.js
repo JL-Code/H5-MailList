@@ -419,3 +419,7 @@ MailList.prototype.getValues = getValues;
 MailList.prototype.getUsers = getUsers;
 MailList.prototype.remove = remove;
 MailList.prototype.updateUsers = updateUsers;
+/**
+ * 标注插件版本号
+ */
+MailList.version = "1.1.5";
