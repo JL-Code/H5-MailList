@@ -4,7 +4,7 @@
  * @param {Object} data 数据源
  */
 export function findNode(id, data) {
-  let value;
+  let value = undefined;
   let source = {};
   if (Array.isArray(data)) {
     source.Children = data;
@@ -13,7 +13,7 @@ export function findNode(id, data) {
   }
   let label = "递归遍历查找耗时：";
   console.time(label);
-  recursiveTraverse(source, function (node) {
+  recursiveTraverse(source, function(node) {
     if (node.ID === id) {
       value = node;
       return false;
@@ -39,7 +39,7 @@ export function recursiveTraverse(node, action) {
   if (flag === false) {
     return;
   }
-  node.Children.forEach(function (item, index) {
+  node.Children.forEach(function(item, index) {
     recursiveTraverse(item, action);
   });
 }

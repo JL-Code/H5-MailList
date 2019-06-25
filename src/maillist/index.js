@@ -16,6 +16,10 @@ import mailListTpl from "./templates/maillist";
 import maillistResultTpl from "./templates/maillist-result";
 import linkmanAvatarTpl from "./templates/linkman-avatar";
 
+import "../style/maillist.less";
+import "../style/maillist-input.less";
+import "../style/searchbar.less";
+
 /**
  * @description 通讯录组件
  * @param {Object} options 参数选项
@@ -28,7 +32,7 @@ import linkmanAvatarTpl from "./templates/linkman-avatar";
   };
  * @todo //TODO: searchbar、picker、mailist通信问题。
  */
-function MailList(options) {
+export function MailList(options) {
   // TODO: 挂载元素 考虑取消挂载在实例上，而采用私有变量
   // 配置参数
   this.options = $.extend(
@@ -38,6 +42,7 @@ function MailList(options) {
       mode: "multi",
       type: ["user"],
       label: "联系人",
+      server: "",
       url: "",
       queryParams: {},
       selectedUserIds: [],
@@ -102,7 +107,7 @@ function MailList(options) {
     // 在MailList html 加入 DOM 树后初始 searchbar
     this.searchbar = new SearchBar({
       el: "#searchbar",
-      url: "/api/v2/organization_tree/users_search",
+      url: `${_this.options.server}/api/v2/organization_tree/users_search`,
       method: "get"
     });
     // 监听（listen）searchbar 的事件。
@@ -135,7 +140,7 @@ function bindEvents() {
       let target = e.target.closest(".weui-cell.organization");
       let dataset = target.dataset;
       let loading = weui.loading("加载中");
-      fetchUser(_this.options.url, dataset.id)
+      fetchUser(_this.options.server + _this.options.url, dataset.id)
         .then(res => {
           loading.hide();
           if (res.data.ErrCode !== 0) {
@@ -276,7 +281,7 @@ function init() {
 
 // 从远程获取数据（在open后请求数据，且在生命周期内只请求一次）
 function request() {
-  let url = this.options.url;
+  let url = this.options.server + this.options.url;
   if (!url) return;
   let loading = weui.loading("加载组织中");
   axios
@@ -402,7 +407,6 @@ function updateDOM(type) {
 /**
  * 将成员放置在prototype属性上后实质是将成员放到原型对象上。
  * ```js
- *
  * ```
  * 所有注意通过此原型创建的所有实例都共享这些成员，也意味着所有一旦这些成员被修改那么所有的实例对象都会受到影响。
  */
@@ -415,5 +419,7 @@ MailList.prototype.getValues = getValues;
 MailList.prototype.getUsers = getUsers;
 MailList.prototype.remove = remove;
 MailList.prototype.updateUsers = updateUsers;
-
-export default MailList;
+/**
+ * 标注插件版本号
+ */
+MailList.version = "1.1.5";
