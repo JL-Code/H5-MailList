@@ -186,7 +186,7 @@ function bindEvents() {
     let target = e.target;
     let dataset = target.dataset;
     // 用户的操作都在activeUsers中
-    let activeUsers = _this.users.activeUsers;
+    let { activeUsers, lazyUsers } = _this.users;
     // Map 重复 call set 会覆盖上一次value
     // TODO: 需要考虑解决关闭重新打开组件带值重入，CheckBox 勾选问题。
     // TODO: 处理单选
@@ -198,7 +198,9 @@ function bindEvents() {
       user.checked = target.checked;
       activeUsers.set(dataset.id, user);
     } else {
+      // 尝试在 activeUsers、lazyUsers 中移除对应的 user
       activeUsers.delete(dataset.id);
+      lazyUsers.delete(dataset.id);
     }
     if (_this.options.mode === "multi") {
       // 派发更新
