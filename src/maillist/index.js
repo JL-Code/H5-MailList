@@ -371,7 +371,7 @@ function updateUsers() {
 // 移除选中的值
 function remove(id) {
   this.users.lazyUsers.delete(id);
-  // 更新box-item
+  this.options.selectedUserIds = this.getValues().map(m => m.ID);
   this.updateDOM("maillist-input");
 }
 
