@@ -71,6 +71,7 @@ export function MailList(options) {
   this.render = function(data) {
     // TODO: 待优化数据结构和更新机制
     let source = {
+      mode: this.options.mode,
       icons: icons,
       ID: "",
       Name: "",
@@ -88,7 +89,7 @@ export function MailList(options) {
     } else {
       source = Object.assign({}, source, data);
     }
-    console.debug("source", source);
+    console.log("selectedUserIds", this.options.selectedUserIds);
     const selectedUserIds = this.options.selectedUserIds;
     // TODO: 临时解决切换nav DOM更新导致input 的勾选状态消失问题。
     for (const user of source.Users) {
@@ -110,7 +111,10 @@ export function MailList(options) {
     // 通知 navs 做出反应,
     source.Header.Navs = updateNavs.call(this, source);
     // 渲染
-    this.updateDOM("count");
+    if (this.options.mode === "multi") {
+      this.updateDOM("count");
+    }
+
     let html = mailListTpl(source);
     this.picker.$picker.find(".weui-picker__bd").html(html);
     const _this = this;
@@ -118,21 +122,22 @@ export function MailList(options) {
     this.searchbar = new SearchBar({
       el: "#searchbar",
       url: `${_this.options.server}/api/v2/organization_tree/users_search`,
-      method: "get"
-    });
-    // 监听（listen）searchbar 的事件。
-    EventBus.on("search", function(value) {
-      let currentNav = _this.navs.find(nav => nav.active);
-      let data = {
-        params: {
-          orgGUID: currentNav.id,
-          keyword: value
-        }
-      };
-      _this.searchbar.search(data);
+      method: "get",
+      mode: _this.options.mode
     });
   };
-
+  let _this = this;
+  // 监听（listen）searchbar 的事件。
+  EventBus.on("search", function(value) {
+    let currentNav = _this.navs.find(nav => nav.active);
+    let data = {
+      params: {
+        orgGUID: currentNav.id,
+        keyword: value
+      }
+    };
+    _this.searchbar.search(data);
+  });
   this.init();
 }
 
@@ -173,19 +178,21 @@ function bindEvents() {
     });
   // 事件注册
   this.picker.$picker
-    .off("chagne", "input[type=checkbox]")
-    .on("change", "input[type=checkbox]", onChanged);
+    .off("chagne", "input.weui-check")
+    .on("change", "input.weui-check", onChanged);
 
   // 订阅了用户勾选改变事件
   function onChanged(e) {
-    // console.debug("input:change", e.target);
-    // console.debug("dataset", JSON.parse(e.target.dataset.search));
     let target = e.target;
     let dataset = target.dataset;
     // 用户的操作都在activeUsers中
     let activeUsers = _this.users.activeUsers;
-    // Map 重复set 会覆盖上一次value
+    // Map 重复 call set 会覆盖上一次value
     // TODO: 需要考虑解决关闭重新打开组件带值重入，CheckBox 勾选问题。
+    // TODO: 处理单选
+    if (_this.options.mode === "single") {
+      activeUsers.clear();
+    }
     if (target.checked) {
       let user = JSON.parse(dataset.user);
       user.checked = target.checked;
@@ -193,10 +200,16 @@ function bindEvents() {
     } else {
       activeUsers.delete(dataset.id);
     }
-    // 派发更新
-    _this.updateDOM("count");
+    if (_this.options.mode === "multi") {
+      // 派发更新
+      _this.updateDOM("count");
+    }
     // 更新当前组织下的用户列表
     // _this.updateView();
+    if (_this.options.mode === "single") {
+      // 发送 confirm 事件。
+      EventBus.emit("_confirm", _this.options.mode);
+    }
   }
 }
 
@@ -274,17 +287,29 @@ function init() {
   // TODO: 需要考虑多实例情况,是否需要采取this.forEach
   // let element = document.querySelector(this.options.el);
   // element.classList.add("weui-panel");
-  let $box = $(maillistResultTpl({ label: this.options.label, Users: [] }));
-  // $(this.options.el).addClass("maillist");
+  let $box = $(
+    maillistResultTpl({
+      label: this.options.label,
+      mode: this.options.mode,
+      Users: []
+    })
+  );
   $(this.options.el).append($box);
 
   $box
     .on("click", ".maillist-action_add", function(e) {
-      // console.debug("_this", _this.open);
       _this.open();
     })
+    .on("click", ".maillist-result__item>.avatar", function(e) {
+      if (_this.options.mode === "single") {
+        let clist = e.target.classList;
+        if (clist.contains("maillist-action")) {
+          return;
+        }
+        _this.open();
+      }
+    })
     .on("click", ".maillist-action_close", function(e) {
-      console.debug(e.target);
       let dataset = e.target.dataset;
       _this.remove(dataset.id);
     });
@@ -322,17 +347,31 @@ function request() {
  * @summary 1.将activeUsers的元素移动到lazyUsers中 2.清空activeUsers
  */
 function updateUsers() {
-  this.users.activeUsers.forEach((value, key) => {
-    this.users.lazyUsers.set(key, value);
-  });
-  this.users.activeUsers.clear();
+  const { activeUsers, lazyUsers } = this.users;
+
+  if (this.options.mode === "single") {
+    let user = activeUsers.values().next().value;
+    if (user) {
+      lazyUsers.clear();
+      lazyUsers.set(user.ID, user);
+    }
+  } else if (this.options.mode === "multi") {
+    activeUsers.forEach((value, key) => {
+      lazyUsers.set(key, value);
+    });
+  } else {
+    console.error("invalid mode");
+  }
+  // 更新selectedUserIds
+  this.options.selectedUserIds = this.getValues().map(m => m.ID);
+  activeUsers.clear();
 }
 
 // 移除选中的值
 function remove(id) {
   this.users.lazyUsers.delete(id);
   // 更新box-item
-  this.updateDOM("box-item");
+  this.updateDOM("maillist-input");
 }
 
 // 获取选中的值
@@ -368,8 +407,9 @@ function open() {
       _this.users.activeUsers.clear();
     },
     onConfirm: function() {
+      console.log("maillist confirm");
       _this.updateUsers();
-      _this.updateDOM("box-item");
+      _this.updateDOM("maillist-input");
       _this.options.onConfirm(_this.getValues());
     }
   });
@@ -383,9 +423,6 @@ function open() {
 // 加载数据
 function loadData(data) {
   this.data = data;
-  // TODO: 临时解决带值打开组件重入问题
-  // let selected = this.options.selectedUserIds;
-  // this.users.lazyUsers.set()
   this.render(data);
 }
 
@@ -394,7 +431,6 @@ function loadData(data) {
  * @description 更新DOM树
  */
 function updateDOM(type) {
-  console.debug("dom type", type);
   let html = "";
   switch (type) {
     case "count":
@@ -403,9 +439,12 @@ function updateDOM(type) {
       html = count ? `( ${count} ) 确定` : "确定";
       this.picker.$picker.find(".weui-picker-confirm").html(html);
       break;
-    case "box-item":
-      // TODO: 更新box显示结果
-      html = linkmanAvatarTpl({ Users: this.getValues() });
+    case "maillist-input":
+      // TODO: 更新已选中结果
+      html = linkmanAvatarTpl({
+        Users: this.getValues(),
+        mode: this.options.mode
+      });
       $(this.options.el)
         .find(".maillist-result")
         .html(html);

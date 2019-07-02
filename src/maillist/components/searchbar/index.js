@@ -129,10 +129,10 @@ export class SearchBar {
    */
   loadData(data) {
     this.searchResultData = data.Result;
-    console.log("12");
     try {
       if (this.searchResultData.length) {
         let data = {
+          mode: this.options.mode,
           result: this.searchResultData,
           icons
         };
