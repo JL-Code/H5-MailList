@@ -55,7 +55,9 @@ export function MailList(options) {
 
   // 用户信息
   this.users = {
+    // 组件打开选择联系人页面期间存放的用户列表
     activeUsers: new Map(),
+    //
     lazyUsers: new Map()
   };
   // 导航信息
@@ -86,10 +88,18 @@ export function MailList(options) {
     } else {
       source = Object.assign({}, source, data);
     }
-    console.log("source", source);
+    console.debug("source", source);
+    const selectedUserIds = this.options.selectedUserIds;
     // TODO: 临时解决切换nav DOM更新导致input 的勾选状态消失问题。
     for (const user of source.Users) {
       user.checked = false;
+      if (
+        selectedUserIds.indexOf(user.ID) !== -1 &&
+        !this.users.lazyUsers.has(user.ID)
+      ) {
+        // 重入
+        this.users.lazyUsers.set(user.ID, user);
+      }
       if (
         this.users.activeUsers.has(user.ID) ||
         this.users.lazyUsers.has(user.ID)
@@ -147,6 +157,7 @@ function bindEvents() {
             return Promise.reject(res.data);
           }
           let users = res.data.Result;
+          console.debug("fetchUser loadSuccess");
           // TODO: 3. updateView 与 render 应该考虑合并或者重新设计。
           updateView.call(_this, target, users);
         })
@@ -167,7 +178,7 @@ function bindEvents() {
 
   // 订阅了用户勾选改变事件
   function onChanged(e) {
-    console.debug("input:change", e.target);
+    // console.debug("input:change", e.target);
     // console.debug("dataset", JSON.parse(e.target.dataset.search));
     let target = e.target;
     let dataset = target.dataset;
@@ -230,12 +241,12 @@ function updateNavs(node) {
 function updateView(target, users = []) {
   let dataset = target.dataset;
   let node = findNode(dataset.id, this.data);
-  console.log("updateView", users);
-  console.log("node", node);
+  console.debug("updateView", users);
+  console.debug("node", node);
   if (node) {
     node.Users = node.Users && node.Users.length ? node.Users : users;
-    console.log("node.Users", node.Users);
-    console.log("node.active", this.users.activeUsers);
+    console.debug("node.Users", node.Users);
+    console.debug("node.active", this.users.activeUsers);
 
     this.render(node);
   } else {
@@ -269,11 +280,11 @@ function init() {
 
   $box
     .on("click", ".maillist-action_add", function(e) {
-      // console.log("_this", _this.open);
+      // console.debug("_this", _this.open);
       _this.open();
     })
     .on("click", ".maillist-action_close", function(e) {
-      console.log(e.target);
+      console.debug(e.target);
       let dataset = e.target.dataset;
       _this.remove(dataset.id);
     });
@@ -383,7 +394,7 @@ function loadData(data) {
  * @description 更新DOM树
  */
 function updateDOM(type) {
-  console.log("dom type", type);
+  console.debug("dom type", type);
   let html = "";
   switch (type) {
     case "count":

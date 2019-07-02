@@ -40,6 +40,7 @@
   const instance = new makit.MailList({
     el: "#maillist",
     url: '/api/v2/organization_tree',
+    selectedUserIds: ["32238b90-8d49-e811-810a-9089c5ea5ec1", "68d5333d-f106-4a45-9a5b-61589da05ffd", "f75de106-dac9-e711-8107-a4c858fd94e6"],
     queryParams: { userId: 'D7D69FDD-A13B-E811-8109-9089C5EA5EC1' },
     className: "picker-fullscreen", onConfirm: function (data) {
       console.log("onConfirm", data)
