@@ -1,4 +1,4 @@
-// import $ from "../util";
+import EventBus from "../../event-bus";
 import pickerTplArt from "./picker.art";
 
 function Picker(options) {
@@ -51,6 +51,8 @@ function Picker(options) {
 
   function hide(callback) {
     _hide(callback);
+    // 解除 _confirm 事件监听
+    EventBus.off("_confirm");
   }
 
   /**
@@ -118,6 +120,16 @@ function Picker(options) {
       return value;
     }
   }
+
+  // TODO: 监听close 事件
+  EventBus.on("_confirm", function(mode) {
+    console.log("EventBus");
+    console.log(EventBus);
+    if (mode === "single") {
+      defaults.onConfirm();
+      hide();
+    }
+  });
 
   this.open = show;
   this.hide = hide;

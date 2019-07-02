@@ -11,4 +11,9 @@
     <span class="avatar-desc">{{$value.Name}}</span>
 </div>
 {{/each}}
+
+{{if mode === 'multi'}}
 <a href="javascript:;" class="maillist-action maillist-action_add"></a>
+{{else if mode === 'single' && Users.length === 0}}
+<a href="javascript:;" class="maillist-action maillist-action_add"></a>
+{{/if}}

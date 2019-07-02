@@ -7,4 +7,6 @@
 
 import onfire from "onfire.js";
 
-export default new onfire();
+const EventBus = new onfire();
+console.log("EventBus onfire", EventBus);
+export default EventBus;

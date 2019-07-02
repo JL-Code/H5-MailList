@@ -26,7 +26,7 @@
     <!-- <button type="button" class="weui-btn weui-btn_primary" id="picker">picker</button> -->
     <!-- <button type="button" class="weui-btn weui-btn_primary" id="picker">获取值</button> -->
     <div class="weui-panel">
-      <div class="weui-panel__hd" style="padding:5px 15px 5px">联系人</div>
+      <div class="weui-panel__hd" style="padding:5px 15px 5px">单选联系人</div>
       <div class="weui-panel__bd">
         <div id="maillist"></div>
         <div class="linkman-avatar">
@@ -34,12 +34,61 @@
         </div>
       </div>
     </div>
+    <div class="weui-panel">
+      <div class="weui-panel__hd" style="padding:5px 15px 5px">多选联系人</div>
+      <div class="weui-panel__bd">
+        <div id="maillist2"></div>
+        <div class="linkman-avatar">
+          <span class="white-text">历程</span>
+        </div>
+      </div>
+    </div>
+    单选测试
+    <div class="weui-cells weui-cells_checkbox">
+      <label class="weui-cell weui-check__label" for="s11">
+        <div class="weui-cell__hd">
+          <input type="radio" class="weui-check" name="radio" id="s11" checked="checked">
+          <i class="weui-icon-checked"></i>
+        </div>
+        <div class="weui-cell__bd">
+          <p>standard is dealt for u.</p>
+        </div>
+      </label>
+      <label class="weui-cell weui-check__label" for="s12">
+        <div class="weui-cell__hd">
+          <input type="radio" name="radio" class="weui-check" id="s12">
+          <i class="weui-icon-checked"></i>
+        </div>
+        <div class="weui-cell__bd">
+          <p>standard is dealicient for u.</p>
+        </div>
+      </label>
+      <a href="javascript:void(0);" class="weui-cell weui-cell_link">
+        <div class="weui-cell__bd">添加更多</div>
+      </a>
+    </div>
     <!-- <div id="searchbar" class="weui-search-bar"></div> -->
 </body>
 <script>
+  var selectedUserIds = ["32238b90-8d49-e811-810a-9089c5ea5ec1"];
   const instance = new makit.MailList({
     el: "#maillist",
     url: '/api/v2/organization_tree',
+    mode: "single",
+    selectedUserIds: selectedUserIds,
+    queryParams: { userId: 'D7D69FDD-A13B-E811-8109-9089C5EA5EC1' },
+    onConfirm: function (data) {
+      console.log("onConfirm", data)
+      selectedUserIds = [data[0].ID];
+      console.log("confirm", selectedUserIds);
+    }
+  });
+
+  const instance2 = new makit.MailList({
+    el: "#maillist2",
+    url: '/api/v2/organization_tree',
+    mode: "multi",
+    selectedUserIds: ["32238b90-8d49-e811-810a-9089c5ea5ec1"],
     queryParams: { userId: 'D7D69FDD-A13B-E811-8109-9089C5EA5EC1' },
     className: "picker-fullscreen", onConfirm: function (data) {
       console.log("onConfirm", data)

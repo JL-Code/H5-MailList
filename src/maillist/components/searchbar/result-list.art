@@ -3,9 +3,16 @@
     {{each $data.result}}
     <label class="weui-cell weui-check__label" for="checkbox_{{$value.ID}}">
         <div class="weui-cell__hd">
-            <input type="checkbox" class="weui-check search-check" data-search="true" data-id="{{$value.ID}}" data-user="{{$value}}"
-                name="checkbox_{{$value.ID}}" id="checkbox_{{$value.ID}}" {{$value.checked?"checked=checked":""}} />
-            <i class="weui-icon-checked"></i>
+            {{if $data.mode === 'single'}}
+            <input type="radio" id="checkbox_{{$value.ID}}" class="weui-check" data-search="true"
+                data-id="{{$value.ID}}" data-user="{{$value}}" name="radio_user"
+                {{$value.checked?"checked=checked":""}} />
+            {{/if}}
+            {{if $data.mode === 'multi'}}
+            <input type="checkbox" id="checkbox_{{$value.ID}}" class="weui-check" data-search="true"
+                data-id="{{$value.ID}}" data-user="{{$value}}" name="checkbox_{{$value.ID}}"
+                {{$value.checked?"checked=checked":""}} />
+            {{/if}}
         </div>
         <div class="weui-cell__bd linkman">
             <div class="avatar">
