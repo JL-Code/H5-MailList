@@ -473,4 +473,4 @@ MailList.prototype.updateUsers = updateUsers;
 /**
  * 标注插件版本号
  */
-MailList.version = "1.1.5";
+MailList.version = "1.2.0";
