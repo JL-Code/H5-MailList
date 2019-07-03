@@ -5,7 +5,6 @@
  * @Version 1.1.0
  */
 
-import EventBus from "../../event-bus";
 import icons from "../../../assets/base64";
 import axios from "../../../plugins/axios";
 import inputTpl from "./input.art";
@@ -23,7 +22,8 @@ const loadingHtml =
   "        </div>";
 
 export class SearchBar {
-  constructor(options) {
+  constructor(options, eventbus) {
+    this._eventbus = eventbus;
     this.options = Object.assign({ method: "get" }, options);
     // 远程检索到的数据
     this.searchResultData = [];
@@ -80,7 +80,7 @@ export class SearchBar {
           if (this.value.length) {
             $searchResult.html(loadingHtml);
             // 发送 search 事件，父级组件负责监听。
-            EventBus.fire("search", this.value);
+            _this._eventbus.fire("search", this.value);
           } else {
             $searchResult.html(nullData);
           }
