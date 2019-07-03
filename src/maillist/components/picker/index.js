@@ -1,7 +1,7 @@
-import EventBus from "../../event-bus";
 import pickerTplArt from "./picker.art";
 
-function Picker(options) {
+function Picker(options, eventbus) {
+  this._eventbus = eventbus;
   const defaults = $.extend(
     {
       className: "",
@@ -52,7 +52,7 @@ function Picker(options) {
   function hide(callback) {
     _hide(callback);
     // 解除 _confirm 事件监听
-    EventBus.off("_confirm");
+    this._eventbus.off("_confirm");
   }
 
   /**
@@ -62,23 +62,17 @@ function Picker(options) {
     let _this = this;
     $picker
       .on("click", ".weui-mask", function() {
-        hide();
+        hide.call(_this);
       })
-      //   .on("click", ".weui-picker__action", function() {
-      //     if (defaults.onBeforeClose && defaults.onBeforeClose() === false) {
-      //     } else {
-      //       hide();
-      //     }
-      //   })
       .on("click", ".weui-picker-cancel", function() {
         if (defaults.onBeforeClose() !== false) {
           defaults.onClose();
-          hide();
+          hide.call(_this);
         }
       })
       .on("click", ".weui-picker-confirm", function() {
         defaults.onConfirm();
-        hide();
+        hide.call(_this);
       })
       .on("animationend webkitAnimationEnd", function(e) {
         if (e.target.classList.contains("weui-animate-slide-down")) {
@@ -121,13 +115,12 @@ function Picker(options) {
     }
   }
 
+  let _this = this;
   // TODO: 监听close 事件
-  EventBus.on("_confirm", function(mode) {
-    console.log("EventBus");
-    console.log(EventBus);
+  this._eventbus.on("_confirm", function(mode) {
     if (mode === "single") {
       defaults.onConfirm();
-      hide();
+      hide.call(_this);
     }
   });
 

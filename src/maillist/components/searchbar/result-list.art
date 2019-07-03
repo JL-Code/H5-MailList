@@ -7,11 +7,13 @@
             <input type="radio" id="checkbox_{{$value.ID}}" class="weui-check" data-search="true"
                 data-id="{{$value.ID}}" data-user="{{$value}}" name="radio_user"
                 {{$value.checked?"checked=checked":""}} />
+            <i class="weui-icon-checked"></i>
             {{/if}}
             {{if $data.mode === 'multi'}}
             <input type="checkbox" id="checkbox_{{$value.ID}}" class="weui-check" data-search="true"
                 data-id="{{$value.ID}}" data-user="{{$value}}" name="checkbox_{{$value.ID}}"
                 {{$value.checked?"checked=checked":""}} />
+            <i class="weui-icon-checked"></i>
             {{/if}}
         </div>
         <div class="weui-cell__bd linkman">
