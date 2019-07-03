@@ -5,7 +5,7 @@
  */
 
 "use strict";
-import EventBus from "./event-bus";
+import onfire from "onfire.js";
 import axios from "../plugins/axios";
 import { findNode } from "./maillist.util";
 import icons from "../assets/base64";
@@ -32,6 +32,7 @@ import "../style/searchbar.less";
  * @todo //TODO: searchbar、picker、mailist通信问题。
  */
 export function MailList(options) {
+  this._eventbus = new onfire();
   // TODO: 挂载元素 考虑取消挂载在实例上，而采用私有变量
   // 配置参数
   this.options = $.extend(
@@ -118,16 +119,20 @@ export function MailList(options) {
     this.picker.$picker.find(".weui-picker__bd").html(html);
     const _this = this;
     // 在MailList html 加入 DOM 树后初始 searchbar
-    this.searchbar = new SearchBar({
-      el: "#searchbar",
-      url: `${_this.options.server}/api/v2/organization_tree/users_search`,
-      method: "get",
-      mode: _this.options.mode
-    });
+    this.searchbar = new SearchBar(
+      {
+        el: "#searchbar",
+        url: `${_this.options.server}/api/v2/organization_tree/users_search`,
+        method: "get",
+        mode: _this.options.mode
+      },
+      _this._eventbus
+    );
   };
   let _this = this;
   // 监听（listen）searchbar 的事件。
-  EventBus.on("search", function(value) {
+  _this._eventbus.on("search", function(value) {
+    console.log("search");
     let currentNav = _this.navs.find(nav => nav.active);
     let data = {
       params: {
@@ -209,7 +214,7 @@ function bindEvents() {
     // _this.updateView();
     if (_this.options.mode === "single") {
       // 发送 confirm 事件。
-      EventBus.emit("_confirm", _this.options.mode);
+      _this._eventbus.emit("_confirm", _this.options.mode);
     }
   }
 }
@@ -402,18 +407,21 @@ function getUsers() {
 function open() {
   let _this = this;
   // 打开picker
-  let picker = new Picker({
-    className: this.options.className,
-    onClose: function() {
-      _this.users.activeUsers.clear();
+  let picker = new Picker(
+    {
+      className: this.options.className,
+      onClose: function() {
+        _this.users.activeUsers.clear();
+      },
+      onConfirm: function() {
+        console.log("maillist confirm");
+        _this.updateUsers();
+        _this.updateDOM("maillist-input");
+        _this.options.onConfirm(_this.getValues());
+      }
     },
-    onConfirm: function() {
-      console.log("maillist confirm");
-      _this.updateUsers();
-      _this.updateDOM("maillist-input");
-      _this.options.onConfirm(_this.getValues());
-    }
-  });
+    _this._eventbus
+  );
   picker.open();
   //TODO: 赋值Picker、SearchBar
   this.picker = picker;
@@ -473,4 +481,4 @@ MailList.prototype.updateUsers = updateUsers;
 /**
  * 标注插件版本号
  */
-MailList.version = "1.2.0";
+MailList.version = "1.2.0.hotfix.1";
