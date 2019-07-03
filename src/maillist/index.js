@@ -481,4 +481,4 @@ MailList.prototype.updateUsers = updateUsers;
 /**
  * 标注插件版本号
  */
-MailList.version = "1.2.0";
+MailList.version = "1.2.0.hotfix.1";
