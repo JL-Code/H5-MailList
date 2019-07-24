@@ -33,8 +33,3 @@
     </label>
     {{/each}}
 </div>
-<!-- 底部操作bar -->
-<div class="bottom-actionbar">
-    <label class="bottom-actionbar__text"></label>
-    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary bottom-actionbar__action">确定</a>
-</div>
