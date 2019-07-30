@@ -9,19 +9,20 @@
   z-index: 100;
   .searchbar-result {
     display: block;
-    height: calc(100vh - @SearchBarHeight);
+    // height: calc(100vh - @SearchBarHeight);
   }
 }
 // 搜索结果
 .searchbar-result {
   display: none;
-  position: absolute;
+  position: fixed;
   top: @SearchBarHeight;
   left: 0;
   right: 0;
+  bottom: 0;
   z-index: 99;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   background-color: #ffffff;
   -webkit-overflow-scrolling: touch;
   .weui-cells {
