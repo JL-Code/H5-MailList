@@ -89,7 +89,7 @@ export function MailList(options) {
     } else {
       source = Object.assign({}, source, data);
     }
-    console.log("selectedUserIds", this.options.selectedUserIds);
+    // console.log("selectedUserIds", this.options.selectedUserIds);
     const selectedUserIds = this.options.selectedUserIds;
     // TODO: 临时解决切换nav DOM更新导致input 的勾选状态消失问题。
     for (const user of source.Users) {
@@ -132,7 +132,6 @@ export function MailList(options) {
   let _this = this;
   // 监听（listen）searchbar 的事件。
   _this._eventbus.on("search", function(value) {
-    console.log("search");
     let currentNav = _this.navs.find(nav => nav.active);
     let data = {
       params: {
@@ -140,7 +139,7 @@ export function MailList(options) {
         keyword: value
       }
     };
-    _this.searchbar.search(data);
+    _this.searchbar.search(data, _this._getCurrentIds());
   });
   this.init();
 }
@@ -380,7 +379,11 @@ function remove(id) {
   this.updateDOM("maillist-input");
 }
 
-// 获取选中的值
+/**
+ * @description 获取选中的用户ID
+ * @returns [{id:"",name:"",avatar:""}]
+ * @public
+ */
 function getValues() {
   const values = this.users.lazyUsers.values();
   return Array.from(values);
@@ -402,6 +405,15 @@ function getUsers() {
   });
 }
 /**
+ * @description 获取当前组件已选用户ID集合
+ */
+function _getCurrentIds() {
+  var lazyIds = Array.from(this.users.lazyUsers.keys());
+  var activeIds = Array.from(this.users.activeUsers.keys());
+  return lazyIds.concat(activeIds);
+}
+
+/**
  * @description 打开通讯录选择界面
  */
 function open() {
@@ -414,7 +426,6 @@ function open() {
         _this.users.activeUsers.clear();
       },
       onConfirm: function() {
-        console.log("maillist confirm");
         _this.updateUsers();
         _this.updateDOM("maillist-input");
         _this.options.onConfirm(_this.getValues());
@@ -478,6 +489,7 @@ MailList.prototype.getValues = getValues;
 MailList.prototype.getUsers = getUsers;
 MailList.prototype.remove = remove;
 MailList.prototype.updateUsers = updateUsers;
+MailList.prototype._getCurrentIds = _getCurrentIds;
 /**
  * 标注插件版本号
  */
