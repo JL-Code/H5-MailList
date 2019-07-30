@@ -54,14 +54,19 @@ export class SearchBar {
     const _this = this;
     const $searchBar = _this.$el;
     const $searchResult = $searchBar.find(".searchbar-result");
+    // const $searchResult = $(popupTpl({}));
+
+    const $actionbar = $searchBar.find(".search-bottom-actionbar");
     const $searchLabel = $searchBar.find(".weui-search-bar__label");
     const $searchInput = $searchBar.find(".weui-search-bar__input");
     const $searchClear = $searchBar.find(".weui-icon-clear");
     const $searchCancel = $searchBar.find(".weui-search-bar__cancel-btn");
     this.$searchResult = $searchResult;
+    this.$actionbar = $actionbar;
     // 清空输入框
     function cancelSearch() {
       $searchInput.val("");
+      $actionbar.hide();
       $searchResult.html(nullData);
     }
 
@@ -97,7 +102,8 @@ export class SearchBar {
       $searchBar.removeClass("weui-search-bar_focusing searchbar_fixed");
       $searchInput[0].blur();
     });
-    $searchResult.on("click", ".bottom-actionbar__action", function(e) {
+    // TODO: 未做是否勾选验证
+    $searchBar.on("click", ".bottom-actionbar__action", function(e) {
       cancelSearch();
       $searchBar.removeClass("weui-search-bar_focusing searchbar_fixed");
       $searchInput[0].blur();
@@ -106,8 +112,10 @@ export class SearchBar {
 
   /**
    * @description 搜索函数
+   * @param params {Object} 参数
+   * @param values {Array} 选中的用户ID集合
    */
-  search(params = {}) {
+  search(params = {}, values = []) {
     let opts = this.options;
     let config = {
       url: opts.url,
@@ -117,7 +125,7 @@ export class SearchBar {
     axios(config)
       .then(({ data }) => {
         if (data.ErrCode !== 0) return Promise.reject(data);
-        this.loadData(data);
+        this.loadData(data, values);
       })
       .catch(err => {
         this.loadError(err);
@@ -127,9 +135,16 @@ export class SearchBar {
   /**
    * @description 加载数据
    */
-  loadData(data) {
-    this.searchResultData = data.Result;
+  loadData(data, checkeds) {
+    // TODO: 暂时不实现checkeds功能
+    checkeds = [];
     try {
+      if (this.options.mode === "multi") {
+        for (const item of data.Result) {
+          item.checked = checkeds.indexOf(item.ID) > -1;
+        }
+      }
+      this.searchResultData = data.Result;
       if (this.searchResultData.length) {
         let data = {
           mode: this.options.mode,
@@ -138,6 +153,7 @@ export class SearchBar {
         };
         let html = resultTpl(data);
         this.$searchResult.html(html);
+        this.$actionbar.show();
       } else {
         this.$searchResult.html(nullData);
       }
