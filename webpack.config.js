@@ -34,7 +34,7 @@ const webpackConfig = {
     proxy: {
       "/api": {
         // target: "http://meunsc.oicp.net:47941/",
-        target: "http://demo.highzap.com:8032/",
+        target: "http://erp.crcc-cd.cn:801/",
         changeOrigin: true,
         ws: true,
         pathRewrite: {
